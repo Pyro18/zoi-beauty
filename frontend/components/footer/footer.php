@@ -43,6 +43,10 @@
 </head>
 
 <body>
+<?php
+if (!isset($_SESSION['is_auth_page']) || !$_SESSION['is_auth_page']) {
+    //echo 'In footer.php, $_SESSION[\'is_auth_page\'] is: ' . ($_SESSION['is_auth_page'] ? 'true' : 'false');
+?>
 <div class="container">
     <footer class="py-5">
         <div class="row">
@@ -103,6 +107,8 @@
         </div>
     </footer>
 </div>
-
+<?php
+}
+?>
 </body>
 </html>

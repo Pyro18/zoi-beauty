@@ -10,6 +10,17 @@
 </head>
 
 <body>
+<?php
+
+// in navbar aggiungo questo controllo perchè la sessione non parte,
+// questo succede perché navbar è incluso per primo dentro al file .htaccess
+// e quindi carica prima la navbar della sessione
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['is_auth_page']) || !$_SESSION['is_auth_page']) {
+    //echo 'In navbar.php, $_SESSION[\'is_auth_page\'] is: ' . ($_SESSION['is_auth_page'] ? 'true' : 'false');
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">[ ZOI ]</a>
@@ -51,5 +62,8 @@
         </div>
     </div>
 </nav>
+<?php
+}
+?>
 </body>
 </html>
