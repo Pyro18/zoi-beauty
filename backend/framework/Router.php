@@ -1,40 +1,56 @@
 <?php
+include 'controllers/HomeController.php';
+include 'controllers/AboutController.php';
 
 /**
- * Defines the routes for the application.
- *
- * @var array $routes An array of routes where the key is the URL path and the value is the corresponding controller and method.
+ * Classe Router che gestisce il routing delle richieste HTTP.
  */
-$routes = [
-  '/' => 'HomeController@index',
-  '/about' => 'AboutController@index',
-];
+class Router {
+    private $routes;
 
+    /**
+     * Costruttore della classe Router.
+     *
+     * @param array $routes Un array associativo contenente le rotte del sistema.
+     */
+    public function __construct($routes) {
+        $this->routes = $routes;
+    }
 
-/**
- * Funzione per gestire il routing delle richieste
- *
- * @param array $routes Array contenente le rotte disponibili
- * @param string $url URL richiesto
- * @return void
- */
-function route($routes, $url) {
-  // Verifica se l'URL richiesto è presente nell'array delle rotte
-  if (array_key_exists($url, $routes)) {
-    // Ottieni la rotta corrispondente all'URL
-    $route = $routes[$url];
-    
-    // Divide la stringa della rotta per ottenere il nome del controller e del metodo
-    $controller = explode('@', $route)[0];
-    $method = explode('@', $route)[1];
-    require_once __DIR__ . '/../controllers/' . $controller . '.php';
-    $controller = new $controller();
-    $controller->$method();
-  } else {
-    echo '404 - Pagina non trovata';
-  }
+    /**
+     * Gestisce il routing della richiesta HTTP.
+     *
+     * @param string $url L'URL richiesto.
+     */
+    public function route($url) {
+        if (array_key_exists($url,  $this->routes)) {
+            $action = $this->routes[$url];
+            list($controller, $method) = explode('@', $action);
+
+            require_once __DIR__ . '../controllers/' . $controller . '.php';
+
+            $controllerInstance = new $controller();
+
+            $controllerInstance->$method();
+        } else {
+            echo '404 - Pagina non trovata';
+        }
+    }
+
+    /**
+     * Esegue il dispatching della richiesta HTTP corrente.
+     */
+    public function dispatch()
+    {
+
+    }
 }
 
-// Esegui il routing della richiesta corrente
-route($routes, $_SERVER['REQUEST_URI']);
+$routes = [
+    '/' => 'HomeController@index',
+    '/about' => 'AboutController@index',
+];
 
+$router = new Router($routes);
+
+$router->route($_SERVER['REQUEST_URI']);

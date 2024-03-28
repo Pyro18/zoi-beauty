@@ -1,5 +1,9 @@
 RewriteEngine On
-RewriteRule ^$ /zoi-beauty/frontend/ [L]
+RewriteRule ^$ /frontend/index.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /zoi-beauty/frontend/$1 [L]
+RewriteRule ^(.*)$ /frontend/$1 [L]
+
+<Files "index.php">
+    php_value auto_prepend_file "C:\xampp\htdocs\zoi-beauty\frontend\components\navbar\navbar.php"
+</Files>
