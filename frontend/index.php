@@ -1,4 +1,6 @@
 <?php
+session_start();
+global $routes;
 include '../backend/framework/Router.php';
 
 

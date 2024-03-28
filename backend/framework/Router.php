@@ -1,56 +1,55 @@
 <?php
 include 'controllers/HomeController.php';
 include 'controllers/AboutController.php';
+include 'controllers/LoginController.php';
+include 'controllers/RegisterController.php';
 
-/**
- * Classe Router che gestisce il routing delle richieste HTTP.
- */
 class Router {
     private $routes;
 
-    /**
-     * Costruttore della classe Router.
-     *
-     * @param array $routes Un array associativo contenente le rotte del sistema.
-     */
-    public function __construct($routes) {
+    public function __construct(array $routes) {
         $this->routes = $routes;
     }
 
-    /**
-     * Gestisce il routing della richiesta HTTP.
-     *
-     * @param string $url L'URL richiesto.
-     */
-    public function route($url) {
+    public function route(string $url) {
+        // Rimuovi la query string e il frammento URL
+        $url = strtok($url, '?#');
+
+        // Assicurati che l'URL non termini con una barra
+        $url = rtrim($url, '/');
+
+        // Se l'URL è vuoto, reindirizza alla home page
+        if (empty($url)) {
+            $url = '/';
+        }
+
         if (array_key_exists($url,  $this->routes)) {
             $action = $this->routes[$url];
             list($controller, $method) = explode('@', $action);
 
-            require_once __DIR__ . '../controllers/' . $controller . '.php';
+            require_once $_SERVER['DOCUMENT_ROOT'] . '/backend/framework/controllers/' . $controller . '.php';
 
             $controllerInstance = new $controller();
 
             $controllerInstance->$method();
         } else {
             echo '404 - Pagina non trovata';
+            exit;
         }
     }
 
-    /**
-     * Esegue il dispatching della richiesta HTTP corrente.
-     */
-    public function dispatch()
-    {
-
+    public function dispatch() {
+        $this->route($_SERVER['REQUEST_URI']);
     }
 }
 
 $routes = [
     '/' => 'HomeController@index',
     '/about' => 'AboutController@index',
+    '/login' => 'LoginController@index',
+    '/register' => 'RegisterController@index',
 ];
 
 $router = new Router($routes);
 
-$router->route($_SERVER['REQUEST_URI']);
+$router->dispatch();

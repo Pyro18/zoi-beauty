@@ -2,8 +2,9 @@ RewriteEngine On
 RewriteRule ^$ /frontend/index.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /frontend/$1 [L]
+RewriteRule ^(.*)$ /frontend/index.php/$1 [L]
 
 <Files "index.php">
     php_value auto_prepend_file "C:\xampp\htdocs\zoi-beauty\frontend\components\navbar\navbar.php"
+    php_value auto_append_file "C:\xampp\htdocs\zoi-beauty\frontend\components\footer\footer.php"
 </Files>
