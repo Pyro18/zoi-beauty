@@ -1,10 +1,19 @@
+# Riscrittura URL
 RewriteEngine On
 RewriteRule ^$ /frontend/index.php [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /frontend/index.php/$1 [L]
 
+# auot prepend e append file
 <Files "index.php">
+    RewriteCond %{REQUEST_URI} !^/login
+    RewriteCond %{REQUEST_URI} !^/register
     php_value auto_prepend_file "C:\xampp\htdocs\zoi-beauty\frontend\components\navbar\navbar.php"
     php_value auto_append_file "C:\xampp\htdocs\zoi-beauty\frontend\components\footer\footer.php"
 </Files>
+
+# Connessione al database
+#<FilesMatch "\.php$">
+#    php_value auto_prepend_file "C:\xampp\htdocs\zoi-beauty\backend\config\prepend.php"
+#</FilesMatch>

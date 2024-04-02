@@ -1,5 +1,6 @@
 <?php
-
+include '../../../config/db.php';
+include '../../../config/request_db.php';
 function createCallBack($status, $message, $data = null)
 {
     return json_encode(array(
@@ -42,39 +43,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     logAccessAttempt($_SERVER['REMOTE_ADDR']);
 
+
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data) {
-        $email = isset($data['email']) ? checkInput($data['email']) : '';
+        $userIdentifier = isset($data['userIdentifier']) ? checkInput($data['userIdentifier']) : '';
         $password = isset($data['password']) ? checkInput($data['password']) : '';
 
-        if (empty($email) || empty($password)) {
-            echo createCallBack('error', 'Missing email or password.', []);
+        if (empty($userIdentifier) || empty($password)) {
+            echo createCallBack('error', 'Missing username/email or password.', []);
             exit;
         }
 
         // Verifica l'utente nel database
         global $db;
-        $sql = "SELECT * FROM utenti WHERE email = :email";
+        $sql = "SELECT * FROM utenti WHERE username = :userIdentifier OR email = :userIdentifier";
         $query = $db->prepare($sql);
-        $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->bindParam(':userIdentifier', $userIdentifier, PDO::PARAM_STR);
         $query->execute();
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // L'utente esiste, verifica la password
-            if (password_verify($password, $user['password'])) {
-                // Password corretta, avvia la sessione e restituisci il successo
-                session_start();
-                $_SESSION['user_id'] = $user['id'];
-                echo createCallBack('success', 'Logged in successfully.', ['user_id' => $user['id']]);
-            } else {
-                // Password errata
-                echo createCallBack('error', 'Incorrect password.', []);
-            }
+
+    if ($user) {
+        // L'utente esiste, verifica la password
+        if (password_verify($password, $user['password'])) {
+            // Password corretta, avvia la sessione e restituisci il successo
+            session_start();
+            $_SESSION['user_id'] = $user['id'];
+            echo createCallBack('success', 'Logged in successfully.', ['user_id' => $user['id']]);
         } else {
-            // Utente non trovato
-            echo createCallBack('error', 'User not found.', []);
+            // Password errata
+            echo createCallBack('error', 'Incorrect password.', []);
         }
+    } else {
+        // Utente non trovato
+        echo createCallBack('error', 'User not found.', []);
+    }
     } else {
         echo createCallBack('error', 'Invalid request.', []);
         exit;

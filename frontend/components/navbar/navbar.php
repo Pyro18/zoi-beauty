@@ -5,23 +5,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../assets/css/navbar.css">
-    <script src="../../assets/js/navbar.js" defer></script>
+    <link rel="stylesheet" href="/frontend/assets/css/navbar_footer/navbar.css">
+    <script src="/frontend/assets/js/navbar/navabar.js" defer></script>
 </head>
 
 <body>
-<?php
-
-// in navbar aggiungo questo controllo perchè la sessione non parte,
-// questo succede perché navbar è incluso per primo dentro al file .htaccess
-// e quindi carica prima la navbar della sessione
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['is_auth_page']) || !$_SESSION['is_auth_page']) {
-    //echo 'In navbar.php, $_SESSION[\'is_auth_page\'] is: ' . ($_SESSION['is_auth_page'] ? 'true' : 'false');
-?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+<nav class="navbar navbar-custom navbar-expand-lg" aria-label="Offcanvas navbar large">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">[ ZOI ]</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Toggle navigation">
@@ -62,8 +51,5 @@ if (!isset($_SESSION['is_auth_page']) || !$_SESSION['is_auth_page']) {
         </div>
     </div>
 </nav>
-<?php
-}
-?>
 </body>
 </html>

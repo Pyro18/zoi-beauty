@@ -1,6 +1,5 @@
 <?php
 include 'controllers/HomeController.php';
-include 'controllers/AboutController.php';
 include 'controllers/LoginController.php';
 include 'controllers/RegisterController.php';
 
@@ -45,7 +44,6 @@ class Router {
 
 $routes = [
     '/' => 'HomeController@index',
-    '/about' => 'AboutController@index',
     '/login' => 'LoginController@index',
     '/register' => 'RegisterController@index',
 ];

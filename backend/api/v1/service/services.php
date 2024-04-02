@@ -1,5 +1,6 @@
 <?php
-
+include '../../../config/db.php';
+include '../../../config/request_db.php';
 function createResponse($status, $message, $data = null)
 {
     return json_encode(array(

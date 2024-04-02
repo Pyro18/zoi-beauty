@@ -1,5 +1,6 @@
 <?php
-
+include '../../../config/db.php';
+include '../../../config/request_db.php';
 // Funzione per creare una risposta JSON
 function createResponse($status, $message, $data = null)
 {

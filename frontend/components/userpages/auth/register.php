@@ -1,3 +1,9 @@
+<?php
+session_start();
+$_SESSION['hide_navbar'] = true;
+echo $_SESSION['hide_navbar'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,10 +51,14 @@
     <h1>Register Page</h1>
     <form action="#" method="POST">
         <input type="text" name="username" placeholder="Username">
+        <input type="email" name="email" placeholder="Email">
         <input type="password" name="password" placeholder="Password">
         <input type="password" name="confirm_password" placeholder="Confirm Password">
         <button type="submit">Register</button>
     </form>
-    <a href="#">Login</a>
+    <a href="/login">Login</a>
+
+
+    <script src="/frontend/assets/js/auth/register.js"></script>
 </body>
 </html>

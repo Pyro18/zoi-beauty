@@ -1,0 +1,258 @@
+.banner {
+    width: 100%;
+    height: calc(100vh - 4em);
+}
+.banner .main {
+    width: 100%;
+    height: calc(100vh - 4em - 3vh);
+    background-color: #d6bcbc;
+}
+.banner .main .holder {
+    display: flex;
+    flex-flow: column-reverse;
+    width: 100%;
+}
+.banner .main .holder .text {
+    width: 90%;
+    margin: 0 auto;
+}
+.banner .main .holder .text h2 {
+    font-family: 'Satisfy', cursive;
+    font-size: 6vh;
+    color: white;
+}
+.banner .main .holder .text h1 {
+    font-family: 'Suranna', serif;
+    font-size: 7vh;
+    text-transform: uppercase;
+    color: #444;
+}
+.banner .main .holder .text .line {
+    width: 4em;
+    height: 3px;
+    margin: 2.5vh 0;
+    background-color: white;
+}
+.banner .main .holder .text p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 4vw;
+    line-height: 1.5em;
+    margin-bottom: 1.5em;
+    color: #616161;
+}
+.banner .main .holder .text a {
+    display: block;
+    width: 11em;
+    height: 3.5em;
+    line-height: 3.5em;
+    font-size: 0.8em;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.04);
+    color: #6d0e2a;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    transition: all 0.3s;
+}
+.banner .main .holder .text a:hover {
+    background-color: #a28282;
+    color: white;
+}
+.banner .main .holder .images {
+    width: 100%;
+    margin-bottom: 2.5vh;
+}
+.banner .main .holder .images .image {
+    display: none;
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    transition: all 0.3s;
+}
+.banner .main .holder .images .active {
+    display: block;
+    transition: all 0.3s;
+}
+.banner .main .dots {
+    display: none;
+}
+.banner .scroll {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 6vh;
+    height: 6vh;
+    margin: -3vh auto 0;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.06);
+    background-color: white;
+    transition: all 0.3s;
+    color: #444444;
+}
+
+a:link {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+a:active {
+    text-decoration: none;
+}
+
+
+.banner .scroll:hover {
+    background-color: #a28282;
+    color: white;
+}
+
+@media (min-width: 720px) {
+
+    .banner {
+        height: auto;
+    }
+    .banner .main {
+        height: auto;
+        padding: 3.5em 0;
+        display: flex;
+        align-items: center;
+    }
+    .banner .main .holder {
+        width: 90%;
+        margin: 0 auto;
+        flex-flow: row;
+        justify-content: space-between;
+    }
+    .banner .main .holder .text {
+        width: 45vw;
+        height: 45vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .banner .main .holder .text h2 {
+        font-size: 6vw;
+        margin: 0;
+    }
+    .banner .main .holder .text h1 {
+        font-size: 7.75vw;
+        margin: 0;
+    }
+    .banner .main .holder .text .line {
+        margin: 1.5vh 0;
+    }
+    .banner .main .holder .text p {
+        font-size: 2vw;
+        margin: 0 0 0.5em;
+        width: 87.5%;
+    }
+    .banner .main .holder .images {
+        width: 45vw;
+        height: 45vw;
+        margin: 0;
+        position: relative;
+    }
+    .banner .main .holder .images .image {
+        display: block;
+        filter: brightness(0.5);
+        width: 42.5vw;
+        height: 42.5vw;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    .banner .main .holder .images .active {
+        top: 0;
+        right: 0;
+        bottom: auto;
+        left: auto;
+        box-shadow: 0 2px 44px rgba(0, 0, 0, 0.16);
+        z-index: 100;
+        filter: none;
+    }
+    .banner .main .holder .images .Hidden {
+        display: none;
+    }
+    .banner .main .dots {
+        display: block;
+        position: absolute;
+        right: 0;
+    }
+    .banner .main .dots .dot {
+        width: 0.75em;
+        height: 0.75em;
+        margin: 5px 1.75vw 5px 0;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .banner .main .dots .dot:hover {
+        background-color: #a28282;
+    }
+    .banner .main .dots .active {
+        background-color: #6d0e2a;
+    }
+    .banner .main .dots .active:hover {
+        background-color: #6d0e2a;
+    }
+    .banner .scroll {
+        width: 5vh;
+        height: 5vh;
+        margin: -2.5vh auto 0;
+    }
+}
+@media (min-width: 1025px) {
+    .banner {
+        height: calc(100vh - 5em);
+    }
+    .banner .main {
+        height: calc(100vh - 5em - 4vh);
+        padding: 0;
+    }
+    .banner .main .holder {
+        width: 85%;
+        height: 80%;
+        margin: 0 auto;
+    }
+    .banner .main .holder .text {
+        height: 100%;
+        width: calc(100vw - (100% - 30%));
+        margin: 0;
+    }
+    .banner .main .holder .text h2 {
+        font-size: 6vw;
+    }
+    .banner .main .holder .text h1 {
+        font-size: 7vw;
+    }
+    .banner .main .holder .text .line {
+        width: 5em;
+        height: 4px;
+        margin: 1.5vh 0;
+    }
+    .banner .main .holder .text p {
+        font-size: 1.25em;
+        margin: 0 0 0.5em;
+        width: 90%;
+    }
+    .banner .main .holder .text a {
+        font-size: 1em;
+    }
+    .banner .main .holder .images {
+        width: 40vw;
+        height: 40vw;
+        max-width: calc((100vh - 5em - 4vh) * 0.8);
+        max-height: 100%;
+    }
+    .banner .main .holder .images .image {
+        height: 90%;
+        width: 90%;
+    }
+    .banner .scroll {
+        width: 6.5vh;
+        height: 6.5vh;
+    }
+}
