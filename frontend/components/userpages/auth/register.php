@@ -46,6 +46,7 @@ echo $_SESSION['hide_navbar'];
         rel="stylesheet"
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
     >
+    <title>ZOI | REGISTER</title>
 </head>
 <body>
     <h1>Register Page</h1>

@@ -5,6 +5,7 @@ class RegisterController
     public function index()
     {
         //echo 'Register Page';
+        $_SESSION['hide_navbar'] = true;
         require_once $_SERVER['DOCUMENT_ROOT'] . '/frontend/components/userpages/auth/register.php';
     }
 

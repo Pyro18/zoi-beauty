@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/frontend/assets/css/auth/login.css">
 
 
+
     <link
             rel="stylesheet"
             data-purpose="Layout StyleSheet"
@@ -45,11 +46,12 @@
             rel="stylesheet"
             href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
     >
+    <title>ZOI | LOGIN</title>
 
 </head>
-<body class="no-navbar">
+<body>
     <h1>Login Page</h1>
-    <form action="#" method="POST">
+    <form action="/" method="POST">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <button type="submit">Login</button>
