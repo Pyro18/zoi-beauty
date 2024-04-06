@@ -38,7 +38,14 @@ class Router {
     }
 
     public function dispatch() {
-        $this->route($_SERVER['REQUEST_URI']);
+        $requestUri = $_SERVER['REQUEST_URI'];
+
+        // se l'url proviene da /backend non esegue il routing
+        if (strpos($requestUri, '/backend') === 0) {
+            return;
+        }
+
+        $this->route($requestUri);
     }
 }
 

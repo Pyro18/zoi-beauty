@@ -1,7 +1,7 @@
 <?php
 include '../../../config/db.php';
 include '../../../config/request_db.php';
-function createCallBack($status, $message, $data = null)
+function createResponse($status, $message, $data = null)
 {
     return json_encode(array(
         'status' => $status,
@@ -54,7 +54,7 @@ function registerUser($username, $email, $password)
     $row = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($row) {
-        echo createCallBack('error', 'User already exists.', []);
+        echo createResponse('error', 'User already exists.', []);
         exit;
     } else {
         $sql = "INSERT INTO utenti (username, email, password, ip_address) VALUES (:username, :email, :password, :ip_address)";
@@ -65,13 +65,13 @@ function registerUser($username, $email, $password)
         $query->bindParam(':ip_address', $ip_address, PDO::PARAM_STR);
         $query->execute();
 
-        echo createCallBack('success', 'User registered successfully.', []);
+        echo createResponse('success', 'User registered successfully.', []);
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isIpBlocked($_SERVER['REMOTE_ADDR'])) {
-        echo createCallBack('error', 'Your IP is blocked! Try again later.', []);
+        echo createResponse('error', 'Your IP is blocked! Try again later.', []);
         exit;
     }
 
@@ -84,17 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = isset($data['password']) ? $data['password'] : '';
 
         if (empty($username) || empty($email) || empty($password)) {
-            echo createCallBack('error', 'Missing required fields.', []);
+            echo createResponse('error', 'Missing required fields.', []);
             exit;
         }
 
         registerUser($username, $email, $password);
     } else {
-        echo createCallBack('error', 'Invalid request.', []);
+        echo createResponse('error', 'Invalid request.', []);
         exit;
     }
 } else {
-    echo createCallBack('error', 'Invalid request method.', []);
+    echo createResponse('error', 'Invalid request method.', []);
     exit;
 }
 

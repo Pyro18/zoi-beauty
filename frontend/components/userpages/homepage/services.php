@@ -19,14 +19,6 @@
     </div>
 </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 <div class="Services">
     <div class="Categories">
         <div class="Category">
@@ -52,36 +44,14 @@
         </div>
         <!-- Aggiungi altri tipi qui -->
     </div>
-    <div class="Services">
-        <div class="Service">
-            <div class="Line">
-                <p class="Name">Service 1</p>
-                <p class="Price">now £10.00</p>
-            </div>
-            <div class="Line">
-                <p class="Time">1 hr</p>
-                <p class="Discount">save up to 20%</p>
-            </div>
-        </div>
-        <div class="Service ActiveService">
-            <div class="Line">
-                <p class="Name">Service 2</p>
-                <p class="Price">now £15.00</p>
-            </div>
-            <div class="Line">
-                <p class="Time">1 hr</p>
-                <p class="Discount">save up to 20%</p>
-            </div>
-        </div>
-        <!-- Aggiungi altri servizi qui -->
+    <div id="services-container" class="Services"> <!-- Aggiunto id="services-container" -->
+        <!-- I servizi verranno renderizzati qui -->
     </div>
     <a class="Book">Book now</a>
 </div>
-</body>
-</html>
-
-
 
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/frontend/assets/js/homepage/services.js"></script>
 </body>
+</html>

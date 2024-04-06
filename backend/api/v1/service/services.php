@@ -11,46 +11,32 @@ function createResponse($status, $message, $data = null)
     ));
 }
 
-// Function to fetch all services
-function getServices()
+function getServices($typeId = null)
 {
     global $db;
-    $query = $db->prepare("SELECT services.*, types.id as type_id FROM services JOIN services_types ON services.id = services_types.service_id JOIN types ON services_types.type_id = types.id");
-    $query->execute();
-    $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    return $result;
+    if ($typeId !== null) {
+        $query = $db->prepare("
+            SELECT s.* 
+            FROM services s
+            INNER JOIN services_types st ON s.id = st.service_id
+            WHERE st.type_id = :type_id
+        ");
+        $query->bindParam(':type_id', $typeId, PDO::PARAM_INT);
+    } else {
+        $query = $db->prepare("SELECT * FROM services");
+    }
+
+    $query->execute();
+    $services = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return createResponse('success', 'Services fetched successfully.', $services);
 }
 
-// Function to fetch all types
-function getTypes()
-{
-    global $db;
-    $query = $db->prepare("SELECT types.*, services.id as service_id, categories.id as category_id FROM types JOIN services_types ON types.id = services_types.type_id JOIN services ON services_types.service_id = services.id JOIN categories_types ON types.id = categories_types.type_id JOIN categories ON categories_types.category_id = categories.id");
-    $query->execute();
-    $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    return $result;
+// Gestione delle richieste
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo getServices();
+} else {
+    echo createResponse('error', 'Invalid request method.', []);
 }
-
-// Function to fetch all categories
-function getCategories()
-{
-    global $db;
-    $query = $db->prepare("SELECT categories.*, types.id as type_id FROM categories JOIN categories_types ON categories.id = categories_types.category_id JOIN types ON categories_types.type_id = types.id");
-    $query->execute();
-    $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    return $result;
-}
-
-// Fetch all services, types, and categories and return them in a JSON response
-$services = getServices();
-$types = getTypes();
-$categories = getCategories();
-
-echo json_encode(array(
-    'services' => $services,
-    'types' => $types,
-    'categories' => $categories
-));

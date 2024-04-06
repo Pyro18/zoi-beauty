@@ -1,8 +1,3 @@
-<?php
-    session_start();
-    $_SESSION['hide_navbar'] = true;
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,7 +1,7 @@
 <?php
 include '../../../config/db.php';
 include '../../../config/request_db.php';
-function createCallBack($status, $message, $data = null)
+function createResponse($status, $message, $data = null)
 {
     return json_encode(array(
         'status' => $status,
@@ -37,7 +37,7 @@ function logAccessAttempt($ip_address)
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isIpBlocked($_SERVER['REMOTE_ADDR'])) {
-        echo createCallBack('error', 'Your IP is blocked! Try again later.', []);
+        echo createResponse('error', 'Your IP is blocked! Try again later.', []);
         exit;
     }
 
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = isset($data['password']) ? checkInput($data['password']) : '';
 
         if (empty($userIdentifier) || empty($password)) {
-            echo createCallBack('error', 'Missing username/email or password.', []);
+            echo createResponse('error', 'Missing username/email or password.', []);
             exit;
         }
 
@@ -69,20 +69,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Password corretta, avvia la sessione e restituisci il successo
             session_start();
             $_SESSION['user_id'] = $user['id'];
-            echo createCallBack('success', 'Logged in successfully.', ['user_id' => $user['id']]);
+            echo createResponse('success', 'Logged in successfully.', ['user_id' => $user['id']]);
         } else {
             // Password errata
-            echo createCallBack('error', 'Incorrect password.', []);
+            echo createResponse('error', 'Incorrect password.', []);
         }
     } else {
         // Utente non trovato
-        echo createCallBack('error', 'User not found.', []);
+        echo createResponse('error', 'User not found.', []);
     }
     } else {
-        echo createCallBack('error', 'Invalid request.', []);
+        echo createResponse('error', 'Invalid request.', []);
         exit;
     }
 } else {
-    echo createCallBack('error', 'Invalid request method.', []);
+    echo createResponse('error', 'Invalid request method.', []);
     exit;
 }
