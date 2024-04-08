@@ -1,7 +1,16 @@
 <?php
+// Includi i file di configurazione del database e delle richieste
 include '../../../config/db.php';
 include '../../../config/request_db.php';
 
+/**
+ * Crea una risposta JSON.
+ *
+ * @param string $status Lo stato della risposta.
+ * @param string $message Il messaggio della risposta.
+ * @param mixed $data I dati della risposta.
+ * @return string La risposta JSON.
+ */
 function createResponse($status, $message, $data = null)
 {
     return json_encode(array(
@@ -11,6 +20,11 @@ function createResponse($status, $message, $data = null)
     ));
 }
 
+/**
+ * Ottieni tutte le categorie dal database.
+ *
+ * @return array Le categorie.
+ */
 function getCategories()
 {
     global $db;
@@ -22,6 +36,11 @@ function getCategories()
     return $categories;
 }
 
+/**
+ * Ottieni tutti i tipi dal database.
+ *
+ * @return array I tipi.
+ */
 function getTypes()
 {
     global $db;
@@ -33,6 +52,12 @@ function getTypes()
     return $types;
 }
 
+/**
+ * Ottieni i servizi per un determinato tipo dal database.
+ *
+ * @param int $typeId L'ID del tipo.
+ * @return array I servizi per il tipo.
+ */
 function getServicesByType($typeId)
 {
     global $db;
@@ -43,15 +68,17 @@ function getServicesByType($typeId)
     $query->bindParam(':type_id', $typeId, PDO::PARAM_INT);
     $query->execute();
     $services = $query->fetchAll(PDO::FETCH_ASSOC);
-
     return $services;
 }
 
-
+/**
+ * Ottieni tutti i servizi dal database.
+ *
+ * @return array I servizi.
+ */
 function getServices()
 {
     global $db;
-
 
     $query = $db->prepare("SELECT id, name, price FROM services");
     $query->execute();
@@ -59,8 +86,6 @@ function getServices()
 
     return $services;
 }
-
-
 
 // Gestione delle richieste
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
