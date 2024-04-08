@@ -218,6 +218,15 @@
 .Services .Services .ActiveBook:hover {
     background-color: #8a6767;
 }
+
+.Service .Dropdown {
+    display: none;
+}
+
+.Service.open .Dropdown {
+    display: block;
+}
+
 @media (min-width: 720px) {
     .Services {
         width: 90vw;

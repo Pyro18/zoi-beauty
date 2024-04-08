@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/assets/css/homepage/home-services.css">
+
+    <link
+            rel="stylesheet"
+            data-purpose="Layout StyleSheet"
+            title="Web Awesome"
+            href="/css/app-wa-fba26eda6a3fd6b4d0ce0def1e2ba1d7.css?vsn=d"
+    >
+
+    <link
+            rel="stylesheet"
+            href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css"
+    >
+
+    <link
+            rel="stylesheet"
+            href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css"
+    >
+
+    <link
+            rel="stylesheet"
+            href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css"
+    >
+
+    <link
+            rel="stylesheet"
+            href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css"
+    >
+
+    <link
+            rel="stylesheet"
+            href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
+    >
 </head>
 <body>
 <div class="container">
@@ -21,31 +53,13 @@
 
 <div class="Services">
     <div class="Categories">
-        <div class="Category">
-            <img src="category1.png" alt="Category 1">
-            <p>Category 1</p>
-        </div>
-        <div class="Category Active">
-            <img src="category2.png" alt="Category 2">
-            <p>Category 2</p>
-        </div>
-        <!-- Aggiungi altre categorie qui -->
+
     </div>
     <div class="Types">
-        <div class="Type">
-            <p class="Name">Type 1</p>
-            <div class="Contain"></div>
-            <img class="Expand" src="expand.png" alt="Expand">
-        </div>
-        <div class="Type Active">
-            <p class="Name">Type 2</p>
-            <div class="Contain"></div>
-            <img class="Expand ExpandOpen" src="expand.png" alt="Expand">
-        </div>
-        <!-- Aggiungi altri tipi qui -->
+
     </div>
-    <div id="services-container" class="Services"> <!-- Aggiunto id="services-container" -->
-        <!-- I servizi verranno renderizzati qui -->
+    <div class="Services service-container">
+
     </div>
     <a class="Book">Book now</a>
 </div>
