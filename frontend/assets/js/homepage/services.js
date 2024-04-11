@@ -5,7 +5,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Definisci lo stato iniziale
+    // stati iniziali
     let activeCategory = 0; // La categoria attiva è impostata su tutti i servizi (0 = "TUTTI")
     let activeType = window.innerWidth >= 720 ? 1 : null;
     let activeServices = [];

@@ -2,6 +2,8 @@
 include 'controllers/HomeController.php';
 include 'controllers/LoginController.php';
 include 'controllers/RegisterController.php';
+include 'controllers/AdminController.php';
+
 
 class Router {
     private $routes;
@@ -53,6 +55,8 @@ $routes = [
     '/' => 'HomeController@index',
     '/login' => 'LoginController@index',
     '/register' => 'RegisterController@index',
+    '/admin/dashboard' => 'AdminController@dashboard',
+    '/admin/login' => 'LoginController@adminLogin',
 ];
 
 $router = new Router($routes);

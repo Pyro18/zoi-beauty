@@ -1,6 +1,7 @@
 <?php
 include '../../../config/db.php';
 include '../../../config/request_db.php';
+
 function createResponse($status, $message, $data = null)
 {
     return json_encode(array(
@@ -16,34 +17,7 @@ function checkInput($input)
     return htmlentities($scanned_input, ENT_QUOTES, 'UTF-8');
 }
 
-function isIpBlocked($ip_address)
-{
-    global $db;
-    $query = $db->prepare("SELECT * FROM ip_bloccati WHERE ip_address = :ip_address AND blocked_until > NOW()");
-    $query->bindParam(':ip_address', $ip_address, PDO::PARAM_STR);
-    $query->execute();
-    $result = $query->fetch(PDO::FETCH_ASSOC);
-
-    return $result ? true : false;
-}
-
-function logAccessAttempt($ip_address)
-{
-    global $db;
-    $query = $db->prepare("INSERT INTO logs (ip_address) VALUES (:ip_address)");
-    $query->bindParam(':ip_address', $ip_address, PDO::PARAM_STR);
-    $query->execute();
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isIpBlocked($_SERVER['REMOTE_ADDR'])) {
-        echo createResponse('error', 'Your IP is blocked! Try again later.', []);
-        exit;
-    }
-
-    logAccessAttempt($_SERVER['REMOTE_ADDR']);
-
-
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data) {
         $userIdentifier = isset($data['userIdentifier']) ? checkInput($data['userIdentifier']) : '';
@@ -54,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        // Verifica l'utente nel database
         global $db;
         $sql = "SELECT * FROM utenti WHERE username = :userIdentifier OR email = :userIdentifier";
         $query = $db->prepare($sql);
@@ -62,22 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $query->execute();
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-
-    if ($user) {
-        // L'utente esiste, verifica la password
-        if (password_verify($password, $user['password'])) {
-            // Password corretta, avvia la sessione e restituisci il successo
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            echo createResponse('success', 'Logged in successfully.', ['user_id' => $user['id']]);
+        if ($user) {
+            if (password_verify($password, $user['password'])) {
+                session_start();
+                $_SESSION['user_id'] = $user['id'];
+                echo createResponse('success', 'Logged in successfully.', ['user_id' => $user['id'], 'nome' => $user['nome'], 'cognome' => $user['cognome']]);
+            } else {
+                echo createResponse('error', 'Incorrect password.', []);
+            }
         } else {
-            // Password errata
-            echo createResponse('error', 'Incorrect password.', []);
+            echo createResponse('error', 'User not found.', []);
         }
-    } else {
-        // Utente non trovato
-        echo createResponse('error', 'User not found.', []);
-    }
     } else {
         echo createResponse('error', 'Invalid request.', []);
         exit;
