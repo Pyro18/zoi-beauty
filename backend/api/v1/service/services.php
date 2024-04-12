@@ -1,5 +1,4 @@
 <?php
-// Includi i file di configurazione del database e delle richieste
 include '../../../config/db.php';
 include '../../../config/request_db.php';
 

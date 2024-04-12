@@ -11,15 +11,13 @@ function handleLoginFormSubmit(event) {
     console.log('userIdentifierInput:', userIdentifierInput);
     console.log('passwordInput:', passwordInput);
 
-
-    // Verificare se gli elementi sono stati trovati
     if (userIdentifierInput && passwordInput) {
         const userIdentifier = userIdentifierInput.value;
         const password = passwordInput.value;
 
         // Effettuare la richiesta XMLHttpRequest
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8000/backend/api/v1/auth/login.php', true);
+        xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/login.php', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -42,15 +40,13 @@ function handleLoginFormSubmit(event) {
             password: password
         }));
     } else {
-        console.error('Input fields not //found');
+        console.error('Input fields not found');
     }
 }
 
-// Assicurarsi che il codice venga eseguito dopo il caricamento della pagina
 window.onload = function() {
     const form = document.querySelector('form');
     if (form) {
-        // Aggiungi un listener per l'invio del modulo di auth
         form.addEventListener('submit', handleLoginFormSubmit);
     } else {
         console.error('Form element not found');

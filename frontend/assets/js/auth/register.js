@@ -16,7 +16,7 @@ window.onload = function() {
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8000/backend/api/v1/auth/register.php', true);
+        xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/register.php', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {

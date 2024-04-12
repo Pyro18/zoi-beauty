@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     const fetchServicesByType = (typeId) => {
         const xhr = new XMLHttpRequest();
-        const url = `http://localhost:8000/backend/api/v1/service/services.php?type_id=${typeId}`;
+        const url = `http://localhost:8080/backend/api/v1/service/services.php?type_id=${typeId}`;
 
         xhr.open('GET', url, true);
 
@@ -181,10 +181,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     /**
      * Recupera i dati iniziali dall'API backend.
-     */
+     **/
     const fetchData = () => {
         const xhr = new XMLHttpRequest();
-        const url = `http://localhost:8000/backend/api/v1/service/services.php`;
+        const url = `http://localhost:8080/backend/api/v1/service/services.php`;
         xhr.open('GET', url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (target.classList.contains('Expand')) {
             const serviceElement = target.closest('.Service');
             toggleDropdown(serviceElement);
-            target.classList.toggle('fa-chevron-down'); // Cambia l'icona dell'elemento cliccato
+            target.classList.toggle('fa-chevron-down'); // cambia l'icona dell'elemento cliccato
             target.classList.toggle('fa-chevron-up'); // da aperto a chiuso o viceversa
         }
     });
