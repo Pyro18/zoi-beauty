@@ -15,6 +15,8 @@ function handleLoginFormSubmit(event) {
         const userIdentifier = userIdentifierInput.value;
         const password = passwordInput.value;
 
+        let messageDiv = document.getElementById('success-login');
+        let errorDiv = document.getElementById('error-login');
         // Effettuare la richiesta XMLHttpRequest
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/login.php', true);
@@ -24,14 +26,14 @@ function handleLoginFormSubmit(event) {
                 if (xhr.status === 200) {
                     const data = JSON.parse(xhr.responseText);
                     if (data.status === 'success') {
-                        alert('Login successful');
+                        messageDiv.innerHTML = `<div id="success-login" class="container alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
                         window.location.href = '/'; // redirect alla home page
                     } else {
-                        alert('Login failed: ' + data.message);
+
                     }
                 } else {
                     console.error('Error:', xhr.status, xhr.statusText);
-                    alert('Login failed. Please try again later.');
+                    errorDiv.innerHTML = `<div id="error-login" class="container alert alert-danger" role="alert">Login failed. Please try again later.</div>`;
                 }
             }
         };

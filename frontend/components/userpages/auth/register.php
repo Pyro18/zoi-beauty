@@ -43,17 +43,91 @@
     <title>ZOI | REGISTER</title>
 </head>
 <body>
-    <h1>Register Page</h1>
-    <form action="#" method="POST">
-        <input type="text" name="username" placeholder="Username">
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="password" name="confirm_password" placeholder="Confirm Password">
-        <button type="submit">Register</button>
-    </form>
-    <a href="/login">Login</a>
+<section class="vh-100" style="background-color: #d6bcbc;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block" style="overflow: hidden; height: 100%; display: flex;">
+                            <img src="https://i.imgur.com/Xlef5Xj.jpg" alt="register form"
+                                 class="img-fluid"
+                                 style="border-radius: 1rem 0 0 1rem; object-fit: cover; min-width: 100%; height: auto;"
+                            />
+                        </div>
 
-
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <form id="registerForm">
+                                    <div class="d-flex align-items-center mb-3 pb-1">
+                                        <span class="h1 fw-bold mb-0">[ ZOI ]</span>
+                                    </div>
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Crea il tuo account</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <label class="form-label" for="nomeInput">Nome</label>
+                                                <input type="text" id="nomeInput" class="form-control form-control-lg" name="nome" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <label class="form-label" for="cognomeInput">Cognome</label>
+                                                <input type="text" id="cognomeInput" class="form-control form-control-lg" name="cognome" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="usernameInput">Username</label>
+                                            <input type="text" id="usernameInput" class="form-control form-control-lg" name="username" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="telefonoInput">Telefono</label>
+                                            <input type="text" id="telefonoInput" class="form-control form-control-lg" name="telefono" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="emailInput">Email</label>
+                                        <input type="email" id="emailInput" class="form-control form-control-lg" name="email" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <label class="form-label" for="passwordInput">Password</label>
+                                                <input type="password" id="passwordInput" class="form-control form-control-lg" name="password" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div data-mdb-input-init class="form-outline mb-4">
+                                                <label class="form-label" for="confirmPasswordInput">Conferma Password</label>
+                                                <input type="password" id="confirmPasswordInput" class="form-control form-control-lg" name="confirm_password" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pt-1 mb-4 d-flex justify-content-between">
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg" type="submit">Registrati</button>
+                                        <p class="mb-0" style="color: #393f81;">Hai già un account? <a href="#!" style="color: #393f81;">Accedi qui!</a></p>
+                                    </div>
+                                    <div class="container text-center mt-4">
+                                        <a href="#!" class="small text-muted">Termini e condizioni.</a>
+                                        <a href="#!" class="small text-muted">Privacy policy</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="success-register"></div>
+    <div id="error-register"></div>
+</section>
     <script src="/frontend/assets/js/auth/register.js"></script>
 </body>
 </html>
