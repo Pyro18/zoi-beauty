@@ -75,7 +75,7 @@
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                                     </div>
                                     <a class="small text-muted" href="#!">Password dimenticata?</a>
-                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Non hai un account? <a href="#!" style="color: #393f81;">Registrati qui!</a></p>
+                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Non hai un account? <a href="/register" style="color: #393f81;">Registrati qui!</a></p>
                                     <a href="#!" class="small text-muted">Termini e condizioni.</a>
                                     <a href="#!" class="small text-muted">Privacy policy</a>
                                 </form>

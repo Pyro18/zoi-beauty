@@ -1,3 +1,8 @@
+<?php
+session_start();
+echo 'Session ID: ' . session_id();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

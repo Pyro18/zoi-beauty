@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="pt-1 mb-4 d-flex justify-content-between">
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg" type="submit">Registrati</button>
-                                        <p class="mb-0" style="color: #393f81;">Hai già un account? <a href="#!" style="color: #393f81;">Accedi qui!</a></p>
+                                        <p class="mb-0" style="color: #393f81;">Hai già un account? <a href="/login" style="color: #393f81;">Accedi qui!</a></p>
                                     </div>
                                     <div class="container text-center mt-4">
                                         <a href="#!" class="small text-muted">Termini e condizioni.</a>

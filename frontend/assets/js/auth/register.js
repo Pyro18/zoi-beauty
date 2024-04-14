@@ -27,7 +27,7 @@ window.onload = function() {
                     const data = JSON.parse(xhr.responseText);
                     if (data.status === 'success') {
                         messageDiv.innerHTML = `<div class="container alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
-                        window.location.href = '/auth';
+                        window.location.href = '/';
                     } else {
                         messageDiv.innerHTML = `<div class="container alert alert-danger" role="alert">Registrazione fallita: ${data.message}</div>`;
                     }
