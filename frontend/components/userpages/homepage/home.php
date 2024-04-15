@@ -1,8 +1,3 @@
-<?php
-session_start();
-echo 'Session ID: ' . session_id();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +42,6 @@ echo 'Session ID: ' . session_id();
 </head>
 
 <body style="background-color: #f6f6f6;">
-<!-- BANNER -->
 <div class="banner">
     <div class="main">
         <div class="holder">
@@ -57,7 +51,7 @@ echo 'Session ID: ' . session_id();
                 <div class="line"></div>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/> Quisque in urna vitae ligula aliquet.</p>
 
-                <a href='#' target='_blank' rel=''>Book now</a>
+                <a href='#booknow' target='_blank' rel=''>Book now</a>
             </div>
 
             <div class="images">
@@ -75,7 +69,7 @@ echo 'Session ID: ' . session_id();
     </div>
     <a class="scroll" href="#about"><i class="fa-solid fa-chevron-down"></i></a>
 </div>
-<!-- FINE BANNER -->
+
 
 <br/>
 

@@ -2,3 +2,90 @@
     background-color: #ffffff;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
+.navbar-nav {
+    margin-left: auto;
+    padding-top: 9px;
+    gap: 20px;
+}
+
+.navbar-nav li a {
+    color: black;
+}
+
+
+.offcanvas-body.justify-content-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+}
+
+.user-info {
+    margin-left: auto;
+}
+
+.link-arrow:after {
+    content: '';
+    background-size: 100% 100%;
+    width: 16px;
+    height: 12px;
+    position: absolute;
+    right: -28px;
+    -webkit-transition: all .4s cubic-bezier(.35, 1, .33, 1);
+    transition: all .4s cubic-bezier(.35, 1, .33, 1)
+}
+
+.link-arrow:hover:after {
+    right: -35px
+}
+
+.link-arrow.link-arrow-white:after {
+    background-size: 100% 100%
+}
+
+.link-arrow-hover:after {
+    right: -35px
+}
+
+.link {
+    display: inline-block;
+    position: relative;
+    border: none;
+    padding-top: 4px;
+    padding-bottom: 0px;
+    text-transform: uppercase;
+    font-family: Montserrat, helvetica, arial, sans-serif;
+    font-weight: 700
+}
+
+.link:active,
+.link:focus,
+.link:hover {
+    outline: 0
+}
+
+.link:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #000;
+    width: 0;
+    height: 2px;
+    -webkit-transition: all .4s cubic-bezier(.35, 1, .33, 1);
+    transition: all .4s cubic-bezier(.35, 1, .33, 1)
+}
+
+.link:hover {
+    color: black
+}
+
+.link:hover:before {
+    width: 100%
+}
+
+.link-theme:before {
+    background: #d6bcbc
+}
+
