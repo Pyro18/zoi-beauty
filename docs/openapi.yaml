@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: ZOI API
+  version: 1.0.0
+  description: |
+    Queste sono le API per gestire un sito web per un centro estetico. Forniscono funzionalità per la gestione degli utenti, delle prenotazioni e dei servizi offerti.
+
+    Le operazioni utente consentono la creazione, la modifica e il recupero delle informazioni degli utenti.
+
+    Le operazioni di prenotazione permettono di prenotare, modificare e cancellare una prenotazione, oltre a visualizzare lo stato della prenotazione.
+
+    Le operazioni sui servizi forniscono un elenco di tutti i servizi disponibili, suddivisi per categorie e tipi.
+
+  contact:
+    email: marius.noroaca@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://zoi-beauty/api/v1
+tags:
+  - name: user
+    description: Operazioni utente
+  - name: booking
+    description: Operazioni di prenotazione
+  - name: service
+    description: Operazioni sui servizi
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Creare un utente
+      requestBody:
+        description: Oggetto utente da creare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Operazione riuscita
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/{userId}:
+    get:
+      tags:
+        - user
+      summary: Ottenere informazioni utente
+      parameters:
+        - name: userId
+          in: path
+          description: ID dell'utente da recuperare
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operazione riuscita
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Utente non trovato
+    put:
+      tags:
+        - user
+      summary: Aggiornare un utente
+      parameters:
+        - name: userId
+          in: path
+          description: ID dell'utente da aggiornare
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Oggetto utente aggiornato
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Operazione riuscita
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Utente non trovato
+  /booking:
+    post:
+      tags:
+        - booking
+      summary: Prenotare un servizio
+      requestBody:
+        description: Dati per la prenotazione
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: Prenotazione riuscita
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '400':
+          description: Richiesta non valida
+  /booking/{bookingId}:
+    put:
+      tags:
+        - booking
+      summary: Modificare una prenotazione
+      parameters:
+        - name: bookingId
+          in: path
+          description: ID della prenotazione da modificare
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Dati aggiornati della prenotazione
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: Prenotazione modificata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '400':
+          description: Richiesta non valida
+        '404':
+          description: Prenotazione non trovata
+    delete:
+      tags:
+        - booking
+      summary: Eliminare una prenotazione
+      parameters:
+        - name: bookingId
+          in: path
+          description: ID della prenotazione da eliminare
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Prenotazione eliminata con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '404':
+          description: Prenotazione non trovata
+  /services:
+    get:
+      tags:
+        - service
+      summary: Ottenere tutti i servizi
+      responses:
+        '200':
+          description: Dati recuperati con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponse'
+        '400':
+          description: Richiesta non valida
+        '404':
+          description: Servizi non trovati
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        password:
+          type: string
+    Booking:
+      type: object
+      properties:
+        service_id:
+          type: integer
+        user_id:
+          type: integer
+        date_time:
+          type: string
+    BookingResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ServiceResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        types:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              price:
+                type: number
