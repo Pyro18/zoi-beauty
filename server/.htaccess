@@ -9,6 +9,6 @@ RewriteRule ^(.*)$ /frontend/index.php/$1 [L]
 # =~ è l'operatore di corrispondenza di pattern in Apache.
 # m# è un delimitatore di espressione regolare. In questo caso, # è usato come delimitatore
 <If "!(%{REQUEST_URI} =~ m#/login# || %{REQUEST_URI} =~ m#/register# || %{REQUEST_URI} =~ m#/backend/api# || %{REQUEST_URI} =~ m#/admin/dashboard# || %{REQUEST_URI} =~ m#/admin/login#)">
-    php_value auto_prepend_file "C:\xampp\htdocs\zoi-beauty\frontend\components\navbar\navbar.php"
-    php_value auto_append_file "C:\xampp\htdocs\zoi-beauty\frontend\components\footer\footer.php"
+    php_value auto_prepend_file "C:\Users\marius.noroaca\Desktop\zoi-beauty\server\frontend\components\navbar\navbar.php"
+    php_value auto_append_file "C:\Users\marius.noroaca\Desktop\zoi-beauty\server\frontend\components\footer\footer.php"
 </If>
