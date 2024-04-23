@@ -16,6 +16,6 @@ class LoginController
         //echo 'Admin Login Page';
         $_SESSION['hide_navbar'] = true;
 
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/frontend/components/adminpages/auth/login.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/frontend/components/adminpages/auth/admin_login.php';
     }
 }

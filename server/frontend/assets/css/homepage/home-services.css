@@ -208,7 +208,6 @@
     line-height: 3em;
     color: white;
     cursor: pointer;
-    pointer-events: none;
     transition: background-color 0.3s;
 }
 .Services .Services .ActiveBook {

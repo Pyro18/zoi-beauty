@@ -1,15 +1,8 @@
 <?php
+session_start();
 include '../../../config/db.php';
 include '../../../config/request_db.php';
 
-/**
- * Crea una risposta JSON.
- *
- * @param string $status Lo stato della risposta.
- * @param string $message Il messaggio della risposta.
- * @param mixed $data I dati della risposta.
- * @return string La risposta JSON.
- */
 function createResponse($status, $message, $data = null)
 {
     return json_encode(array(
@@ -19,12 +12,20 @@ function createResponse($status, $message, $data = null)
     ));
 }
 
-/**
- * Ottieni tutte le prenotazioni dal database.
- *
- * @return array Le prenotazioni.
- */
-function getBookings()
+
+function getBooking($bookingId)
+{
+    global $db;
+
+    $query = $db->prepare("SELECT * FROM prenotazioni WHERE id = :booking_id");
+    $query->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
+    $query->execute();
+    $booking = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $booking;
+}
+
+function getAllBookings()
 {
     global $db;
 
@@ -35,15 +36,7 @@ function getBookings()
     return $bookings;
 }
 
-/**
- * Effettua una prenotazione.
- *
- * @param int $serviceId L'ID del servizio prenotato.
- * @param int $userId L'ID dell'utente che effettua la prenotazione.
- * @param string $dateTime La data e l'ora della prenotazione.
- * @return bool True se la prenotazione è stata effettuata con successo, altrimenti false.
- */
-function bookService($serviceId, $userId, $dateTime)
+function createBooking($serviceId, $userId, $dateTime)
 {
     global $db;
 
@@ -54,47 +47,93 @@ function bookService($serviceId, $userId, $dateTime)
     return $query->execute();
 }
 
-// Gestione delle richieste
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Implementazione per ottenere le categorie, i tipi e i servizi rimane invariata
-    $categories = getCategories();
-    $types = getTypes();
+function updateBooking($bookingId, $serviceId, $userId, $dateTime)
+{
+    global $db;
 
-    // Aggiungi la categoria "Tutti" all'inizio dell'array delle categorie
-    array_unshift($categories, array('id' => 0, 'name' => 'Tutti'));
+    $query = $db->prepare("UPDATE prenotazioni SET utente_id = :utente_id, servizio_id = :servizio_id, data_ora = :data_ora WHERE id = :booking_id");
+    $query->bindParam(':utente_id', $userId, PDO::PARAM_INT);
+    $query->bindParam(':servizio_id', $serviceId, PDO::PARAM_INT);
+    $query->bindParam(':data_ora', $dateTime);
+    $query->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
+    return $query->execute();
+}
 
-    // Se viene fornito un tipo di ID nella query string, ottieni i servizi per quel tipo
-    if (isset($_GET['type_id'])) {
-        $typeId = $_GET['type_id'];
-        $services = getServicesByType($typeId);
-    } else {
-        // Altrimenti, ottieni tutti i servizi
-        $services = getServices();
-    }
+function deleteBooking($bookingId)
+{
+    global $db;
 
-    $data = array(
-        'categories' => $categories,
-        'types' => $types,
-        'services' => $services
-    );
+    $query = $db->prepare("DELETE FROM prenotazioni WHERE id = :booking_id");
+    $query->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
+    return $query->execute();
+}
 
-    echo createResponse('success', 'Data fetched successfully.', $data);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verifica che siano stati forniti i parametri necessari per effettuare la prenotazione
-    if (isset($_POST['service_id']) && isset($_POST['user_id']) && isset($_POST['date_time'])) {
-        $serviceId = $_POST['service_id'];
-        $userId = $_POST['user_id'];
-        $dateTime = $_POST['date_time'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+$requestData = json_decode(file_get_contents('php://input'), true);
 
-        // Effettua la prenotazione
-        if (bookService($serviceId, $userId, $dateTime)) {
-            echo createResponse('success', 'Booking successful.');
+switch ($requestMethod) {
+    case 'GET':
+        if (isset($requestData['booking_id'])) {
+            $bookingId = $requestData['booking_id'];
+            $booking = getBooking($bookingId);
+
+            if ($booking) {
+                echo createResponse('success', 'Booking fetched successfully.', $booking);
+            } else {
+                echo createResponse('error', 'Booking not found.', []);
+            }
         } else {
-            echo createResponse('error', 'Failed to book the service.');
+            $bookings = getAllBookings();
+            echo createResponse('success', 'Bookings fetched successfully.', $bookings);
         }
-    } else {
-        echo createResponse('error', 'Missing parameters for booking.');
+        break;
+
+    case 'POST':
+    if (!isset($requestData['servizio_id']) || !isset($requestData['utente_id']) || !isset($requestData['data_ora'])) {
+        echo createResponse('error', 'Missing required data.');
+        exit;
     }
-} else {
-    echo createResponse('error', 'Invalid request method.', []);
+
+    $serviceId = $requestData['servizio_id'];
+    $userId = $requestData['utente_id'];
+    $dateTime = $requestData['data_ora'];
+
+    if (createBooking($serviceId, $userId, $dateTime)) {
+        echo createResponse('success', 'Booking created successfully.');
+    } else {
+        echo createResponse('error', 'Failed to create booking.');
+    }
+    break;
+
+case 'PUT':
+    if (!isset($requestData['booking_id']) || !isset($requestData['servizio_id']) || !isset($requestData['utente_id']) || !isset($requestData['data_ora'])) {
+        echo createResponse('error', 'Missing required data.');
+        exit;
+    }
+
+    $bookingId = $requestData['booking_id'];
+    $serviceId = $requestData['servizio_id'];
+    $userId = $requestData['utente_id'];
+    $dateTime = $requestData['data_ora'];
+
+    if (updateBooking($bookingId, $serviceId, $userId, $dateTime)) {
+        echo createResponse('success', 'Booking updated successfully.');
+    } else {
+        echo createResponse('error', 'Failed to update booking.');
+    }
+    break;
+
+    case 'DELETE':
+        $bookingId = $requestData['booking_id'];
+
+        if (deleteBooking($bookingId)) {
+            echo createResponse('success', 'Booking deleted successfully.');
+        } else {
+            echo createResponse('error', 'Failed to delete booking.');
+        }
+        break;
+
+    default:
+        echo createResponse('error', 'Invalid request method.', []);
+        break;
 }

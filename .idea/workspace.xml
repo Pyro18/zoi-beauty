@@ -4,7 +4,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fcbb4bb-d20b-4f76-8d3e-a9a450bf7399" name="Changes" comment="" />
+    <list default="true" id="2fcbb4bb-d20b-4f76-8d3e-a9a450bf7399" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/lib/controllers/admin_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/controllers/auth_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/controllers/bookings_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/controllers/services_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/controllers/user_controller.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/models/booking.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/models/service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/models/user.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/network/api.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/utils/constants.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/utils/hexColor.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/utils/routes.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/utils/themes.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/views/admin/admin_login_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/views/admin/admin_register_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/views/auth/login_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/views/auth/register_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/lib/views/user/home_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/frontend/assets/js/admin/admin_login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/frontend/components/adminpages/auth/admin_login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/zoi-beauty.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/zoi-beauty.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/client/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/client/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/client/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/client/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/client/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/test/widget_test.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/client/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/client/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/client/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/backend/api/v1/auth/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/backend/api/v1/auth/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/backend/api/v1/service/booking.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/backend/api/v1/service/booking.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/backend/api/v1/user/users.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/backend/api/v1/user/users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/backend/framework/controllers/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/backend/framework/controllers/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/assets/css/homepage/home-services.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/assets/css/homepage/home-services.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/assets/js/admin/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/assets/js/admin/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/assets/js/admin/login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/assets/js/auth/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/assets/js/auth/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/assets/js/homepage/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/assets/js/homepage/services.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/components/adminpages/auth/login.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/components/adminpages/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/components/adminpages/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/components/userpages/auth/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/components/userpages/auth/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/frontend/components/userpages/homepage/services.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/frontend/components/userpages/homepage/services.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +61,14 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -24,25 +81,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/zoi-beauty&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.main.dart.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowRunning Devices.ShowToolbar": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/mariu/Desktop/zoi-beauty",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mariu\Desktop\zoi-beauty\server\frontend\assets\js\admin" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-PS-241.14494.237" />
-        <option value="bundled-php-predefined-ba97393d7c68-8f0632a2a215-com.jetbrains.php.sharedIndexes-PS-241.14494.237" />
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
       </set>
     </attachedChunks>
   </component>
@@ -59,11 +128,29 @@
       <workItem from="1713194433310" duration="13833000" />
       <workItem from="1713293963018" duration="74000" />
       <workItem from="1713369541645" duration="1286000" />
-      <workItem from="1713465862624" duration="316000" />
+      <workItem from="1713465862624" duration="3154000" />
+      <workItem from="1713622389259" duration="2475000" />
+      <workItem from="1713633321132" duration="8613000" />
+      <workItem from="1713702394108" duration="23242000" />
+      <workItem from="1713889465409" duration="7982000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.php" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

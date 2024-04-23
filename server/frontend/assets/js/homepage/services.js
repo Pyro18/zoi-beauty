@@ -151,33 +151,37 @@ document.addEventListener("DOMContentLoaded", function() {
     /**
      * Renderizza i servizi nel DOM.
      */
+        // Dentro la funzione renderServices(), aggiungi un event listener per il click su un servizio
     const renderServices = () => {
-        if (!services) {
-            return;
-        }
-        const servicesContainer = document.querySelector('.Services .service-container');
-        servicesContainer.innerHTML = '';
+            if (!services) {
+                return;
+            }
+            const servicesContainer = document.querySelector('.Services .service-container');
+            servicesContainer.innerHTML = '';
 
-        services.forEach(service => {
-            const price = parseFloat(service.price);
-            const serviceElement = document.createElement('div');
-            serviceElement.classList.add('Service');
-            serviceElement.innerHTML = `
-                <div class="Line">
-                    <p class="Name">${service.name}</p>
-                    <p class="Price">now €${price.toFixed(2)}</p>
-                </div>
-                <div class="Line">
-                    <p class="Time">${Math.floor(service.duration / 60)} hrs ${service.duration % 60} mins</p>
-                    <p class="Discount">save up to 20%</p>
-                </div>
-            `;
-            serviceElement.addEventListener('click', () => {
-                switchService(service.id);
+            services.forEach(service => {
+                const price = parseFloat(service.price);
+                const serviceElement = document.createElement('div');
+                serviceElement.classList.add('Service');
+                serviceElement.innerHTML = `
+            <div class="Line">
+                <p class="Name">${service.name}</p>
+                <p class="Price">now €${price.toFixed(2)}</p>
+            </div>
+            <div class="Line">
+                <p class="Time">${Math.floor(service.duration / 60)} hrs ${service.duration % 60} mins</p>
+                <p class="Discount">save up to 20%</p>
+            </div>
+        `;
+                serviceElement.addEventListener('click', () => {
+                    console.log('Service clicked:', service.name);
+                    switchService(service.id); // Chiamare switchService con l'ID del servizio quando viene cliccato
+                    console.log('Active services:', activeServices);
+                });
+                servicesContainer.appendChild(serviceElement);
             });
-            servicesContainer.appendChild(serviceElement);
-        });
-    };
+        };
+
 
     /**
      * Recupera i dati iniziali dall'API backend.
@@ -213,6 +217,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fetchData();
 
+
+
+
     // Re-renderizza i servizi quando la finestra viene ridimensionata
     window.addEventListener('resize', () => {
         if (window.innerWidth >= 720) {
@@ -227,8 +234,79 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     const toggleDropdown = (serviceElement) => {
         const dropdown = serviceElement.querySelector('.Dropdown');
-        dropdown.classList.toggle('open'); // Aggiungi o rimuovi la classe .open per mostrare o nascondere il menu a discesa
+        dropdown.classList.toggle('open');
     };
+
+
+
+    document.querySelector('.Book').addEventListener('click', function() {
+        if (activeServices.length > 0) {
+            console.log('Book button clicked');
+            // Apri il modale
+            let modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+
+            // Inserisci i dettagli dei servizi attivi e della categoria attiva nel modale
+            document.getElementById('bookingModalLabel').textContent = `Booking for ${activeCategory.name} - ${activeServices.length} service(s) selected`;
+        } else {
+            console.log('No services selected.');
+        }
+    });
+
+
+    // test per vedere se il tasto Prenota funziona
+    // debug
+    document.getElementById('submitBooking').addEventListener('click', function(event) {
+        console.log('Prenota');
+    });
+
+    // Aggiungi un gestore di eventi al form per l'evento submit
+    document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Get the logged-in user's ID
+    let userId = document.getElementById('userId').value;
+
+    // get the booking date and time
+    let bookingDate = document.getElementById('bookingDate').value;
+    let bookingTime = document.getElementById('bookingTime').value;
+
+    let dataTime = `${bookingDate}T${bookingTime}:00`;
+
+    // Get the selected service ID
+    let serviceId = activeServices[0]; // assuming activeServices contains the IDs of selected services
+
+    // Create an object with the data
+    let data = {
+        'utente_id': userId,
+        'servizio_id': serviceId,
+        'data_ora': dataTime,
+    };
+
+    // Convert the object to a JSON string
+    let jsonData = JSON.stringify(data);
+
+    // Invia una richiesta al server
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        console.log(xhr.responseText); // Add this line
+        if (xhr.status === 200) {
+            let data = JSON.parse(xhr.responseText);
+            if (data.status === 'success') {
+                console.log('Prenotazione creata con successo.');
+            } else {
+                console.error('Errore nella creazione della prenotazione:', data.message);
+            }
+        } else {
+            console.error('Errore:', xhr.status, xhr.statusText);
+        }
+    };
+    xhr.send(jsonData);
+});
+
+
 
     // Gestisci gli eventi di click sul documento
     document.addEventListener('click', (event) => {

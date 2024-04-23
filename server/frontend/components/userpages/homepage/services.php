@@ -1,3 +1,16 @@
+<?php
+session_start();
+function getLoggedInUserId()
+{
+    if (isset($_SESSION['user_id'])) {
+        return $_SESSION['user_id'];
+    } else {
+        return null;
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +52,9 @@
     >
 </head>
 <body>
+
+
+
 <div class="container" id="booknow">
     <div class="row">
         <div class="col">
@@ -50,6 +66,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="Services">
     <div class="Categories">
@@ -64,6 +81,41 @@
     <a class="Book">Book now</a>
 </div>
 
+
+<!-- Modale per la prenotazione -->
+
+<input type="hidden" id="userId" value="<?php echo getLoggedInUserId()?>">
+<script>console.log(getLoggedInUserId());</script>
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookingModalLabel">Prenotazione</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="bookingForm" method="post">
+          <!-- Aggiungi qui i campi del form per i dettagli della prenotazione -->
+          <div class="mb-3">
+            <label for="bookingDate" class="form-label">Data</label>
+            <input type="date" class="form-control" id="bookingDate" name="date">
+          </div>
+          <div class="mb-3">
+            <label for="bookingTime" class="form-label">Ora</label>
+            <input type="time" class="form-control" id="bookingTime" name="time">
+          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                <button type="submit" class="btn btn-primary" id="submitBooking">Prenota</button>
+            </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/frontend/assets/js/homepage/services.js"></script>

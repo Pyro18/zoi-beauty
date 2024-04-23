@@ -17,7 +17,7 @@ function getUser($userId)
 {
     global $db;
 
-    $sql = "SELECT id, username, nome, cognome FROM utenti WHERE id = :userId";
+    $sql = "SELECT id, username, nome, cognome, telefono, email FROM utenti WHERE id = :userId";
     $query = $db->prepare($sql);
     $query->bindParam(':userId', $userId, PDO::PARAM_INT);
     $query->execute();
@@ -27,8 +27,8 @@ function getUser($userId)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if (isset($_SESSION['user_id'])) {
-        $userId = $_SESSION['user_id'];
+    if (isset($_GET['user_id'])) {
+        $userId = $_GET['user_id'];
         $user = getUser($userId);
 
         if ($user) {

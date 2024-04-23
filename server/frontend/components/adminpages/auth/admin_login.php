@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title>ZOI | LOGIN</title>
+    <title>ZOI | ADMIN LOGIN</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
-                                <form id="loginForm" method="post">
+                                <form id="adminLoginForm" method="post">
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <span class="h1 fw-bold mb-0">[ ZOI ] - Admin</span>
                                     </div>
@@ -51,7 +51,6 @@
     <div id="success-login"></div>
     <div id="error-login"></div>
 </section>
-
-<script src="../../../assets/js/admin/login.js"></script>
+<script src="/frontend/assets/js/admin/admin_login.js"></script>
 </body>
 </html>

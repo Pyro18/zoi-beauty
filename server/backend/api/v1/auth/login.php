@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (password_verify($password, $user['password'])) {
                 session_start();
                 $_SESSION['user_id'] = $user['id'];
-                setcookie('user_id', $user['id'], time() + (86400 * 30), "/"); // 86400 = 1 day
+                setcookie('user_id', $user['id'], time() + (86400 * 30), "/"); 
                 echo createResponse('success', 'Logged in successfully.', ['user_id' => $user['id'], 'nome' => $user['nome'], 'cognome' => $user['cognome']]);
             } else {
                 echo createResponse('error', 'Incorrect password.', []);

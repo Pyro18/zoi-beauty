@@ -1,4 +1,4 @@
-console.log('auth.js loaded');
+console.log('login.js loaded');
 
 // Funzione per l'invio del modulo di auth
 function handleLoginFormSubmit(event) {
@@ -27,7 +27,7 @@ function handleLoginFormSubmit(event) {
                     const data = JSON.parse(xhr.responseText);
                     if (data.status === 'success') {
                         messageDiv.innerHTML = `<div id="success-login" class="container alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
-                        window.location.href = '/'; // redirect alla home page
+                        window.location.href = '/';
                     } else {
 
                     }
