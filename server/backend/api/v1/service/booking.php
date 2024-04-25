@@ -1,4 +1,5 @@
 <?php
+global $db;
 session_start();
 include '../../../config/db.php';
 include '../../../config/request_db.php';
@@ -28,11 +29,9 @@ function getBooking($bookingId)
 function getAllBookings()
 {
     global $db;
-
-    $query = $db->prepare("SELECT * FROM prenotazioni");
+    $query = $db->prepare("SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id");
     $query->execute();
     $bookings = $query->fetchAll(PDO::FETCH_ASSOC);
-
     return $bookings;
 }
 
@@ -47,13 +46,11 @@ function createBooking($serviceId, $userId, $dateTime)
     return $query->execute();
 }
 
-function updateBooking($bookingId, $serviceId, $userId, $dateTime)
+function updateBooking($bookingId, $dateTime)
 {
     global $db;
 
-    $query = $db->prepare("UPDATE prenotazioni SET utente_id = :utente_id, servizio_id = :servizio_id, data_ora = :data_ora WHERE id = :booking_id");
-    $query->bindParam(':utente_id', $userId, PDO::PARAM_INT);
-    $query->bindParam(':servizio_id', $serviceId, PDO::PARAM_INT);
+    $query = $db->prepare("UPDATE prenotazioni SET data_ora = :data_ora WHERE id = :booking_id");
     $query->bindParam(':data_ora', $dateTime);
     $query->bindParam(':booking_id', $bookingId, PDO::PARAM_INT);
     return $query->execute();
@@ -106,17 +103,15 @@ switch ($requestMethod) {
     break;
 
 case 'PUT':
-    if (!isset($requestData['booking_id']) || !isset($requestData['servizio_id']) || !isset($requestData['utente_id']) || !isset($requestData['data_ora'])) {
+    if (!isset($requestData['booking_id']) || !isset($requestData['data_ora'])) {
         echo createResponse('error', 'Missing required data.');
         exit;
     }
 
     $bookingId = $requestData['booking_id'];
-    $serviceId = $requestData['servizio_id'];
-    $userId = $requestData['utente_id'];
     $dateTime = $requestData['data_ora'];
 
-    if (updateBooking($bookingId, $serviceId, $userId, $dateTime)) {
+    if (updateBooking($bookingId, $dateTime)) {
         echo createResponse('success', 'Booking updated successfully.');
     } else {
         echo createResponse('error', 'Failed to update booking.');
@@ -124,12 +119,23 @@ case 'PUT':
     break;
 
     case 'DELETE':
-        $bookingId = $requestData['booking_id'];
+        $bookingId = $_GET['booking_id'] ?? null;
 
-        if (deleteBooking($bookingId)) {
-            echo createResponse('success', 'Booking deleted successfully.');
+        if ($bookingId === null) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'ID del booking non fornito']);
+            exit;
+        }
+
+        $query = $db->prepare("DELETE FROM prenotazioni WHERE id = :id");
+        $result = $query->execute([':id' => $bookingId]);
+
+        if ($result) {
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'message' => 'Booking eliminato con successo']);
         } else {
-            echo createResponse('error', 'Failed to delete booking.');
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Errore durante l\'eliminazione del booking']);
         }
         break;
 

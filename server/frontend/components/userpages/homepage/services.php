@@ -1,16 +1,3 @@
-<?php
-session_start();
-function getLoggedInUserId()
-{
-    if (isset($_SESSION['user_id'])) {
-        return $_SESSION['user_id'];
-    } else {
-        return null;
-    }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,9 +70,7 @@ function getLoggedInUserId()
 
 
 <!-- Modale per la prenotazione -->
-
-<input type="hidden" id="userId" value="<?php echo getLoggedInUserId()?>">
-<script>console.log(getLoggedInUserId());</script>
+<div id="alertContainer"></div>
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -102,7 +87,7 @@ function getLoggedInUserId()
           </div>
           <div class="mb-3">
             <label for="bookingTime" class="form-label">Ora</label>
-            <input type="time" class="form-control" id="bookingTime" name="time">
+            <input type="time" class="form-control" id="bookingTime" name="time", min="8:00", max="18:00">
           </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
@@ -110,7 +95,6 @@ function getLoggedInUserId()
             </div>
         </form>
       </div>
-
     </div>
   </div>
 </div>

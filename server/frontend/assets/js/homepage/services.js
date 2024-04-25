@@ -239,7 +239,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    document.querySelector('.Book').addEventListener('click', function() {
+	document.querySelector('.Book').addEventListener('click', function () {
+		let userId = getLoogedInUserId();
+		if (!userId) { 
+			alert('Devi effettuare il login per prenotare un servizio.');
+			window.location.href = '/login'
+			return
+		}
+
+
         if (activeServices.length > 0) {
             console.log('Book button clicked');
             // Apri il modale
@@ -253,6 +261,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    document.getElementById('bookingDate').addEventListener('change', function () {
+        let selectedDate = new Date(this.value);
+			if (selectedDate.getDay() === 0) { // 0 = Domenica
+				alert('Le prenotazioni non sono disponibili la domenica, selezioni un altro giorno.');
+				this.value = '';
+			} else {
+				console.log('Data selezionata:', this.value);
+			}
+		});
+	
+    // funzione per ottenere l'id dell'utente loggato tramite cookie
+    function getLoogedInUserId() {
+        return getCookie('user_id');
+    }
+
 
     // test per vedere se il tasto Prenota funziona
     // debug
@@ -260,34 +283,33 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Prenota');
     });
 
-    // Aggiungi un gestore di eventi al form per l'evento submit
+
+    
     document.getElementById('bookingForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Get the logged-in user's ID
-    let userId = document.getElementById('userId').value;
-
-    // get the booking date and time
+    
+    let userId = getLoogedInUserId();
+    
     let bookingDate = document.getElementById('bookingDate').value;
     let bookingTime = document.getElementById('bookingTime').value;
 
     let dataTime = `${bookingDate}T${bookingTime}:00`;
 
-    // Get the selected service ID
-    let serviceId = activeServices[0]; // assuming activeServices contains the IDs of selected services
+    let serviceId = activeServices[0];
 
-    // Create an object with the data
+    
     let data = {
         'utente_id': userId,
         'servizio_id': serviceId,
         'data_ora': dataTime,
     };
 
-    // Convert the object to a JSON string
+    
     let jsonData = JSON.stringify(data);
 
     // Invia una richiesta al server
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
@@ -296,8 +318,40 @@ document.addEventListener("DOMContentLoaded", function() {
             let data = JSON.parse(xhr.responseText);
             if (data.status === 'success') {
                 console.log('Prenotazione creata con successo.');
+
+                // Chiudi il modale
+                let modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                modal.hide();
+
+                // mostra un alert di successo
+                let alertContainer = document.getElementById('alertContainer');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+                        Prenotazione creata con successo.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+
+                // Rimuovi l'alert dopo 5 secondi
+                setTimeout(function() {
+                    alertContainer.innerHTML = '';
+                }, 3000);
             } else {
                 console.error('Errore nella creazione della prenotazione:', data.message);
+
+                                // Mostra un alert di errore
+                let alertContainer = document.getElementById('alertContainer');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+                        Errore nella creazione della prenotazione: ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+
+                // Rimuovi l'alert dopo 5 secondi
+                setTimeout(function() {
+                    alertContainer.innerHTML = '';
+                }, 3000);
             }
         } else {
             console.error('Errore:', xhr.status, xhr.statusText);

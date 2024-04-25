@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client/controllers/auth_controller.dart';
 import 'package:client/utils/hexColor.dart';
+import 'package:flutter/widgets.dart';
+import 'package:local_auth/local_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,8 +17,51 @@ class _LoginPageState extends State<LoginPage> {
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthController _authController = AuthController();
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
 
   bool _passwordVisible = false;
+
+  Future<bool> isBiometricAvailable() async {
+    bool isAvailable = false;
+
+    try {
+      isAvailable = await _localAuthentication.canCheckBiometrics;
+    } catch (e) {
+      print(e);
+    }
+    if (!mounted) return isAvailable;
+    return isAvailable;
+  }
+
+  Future<void> getAvailableBiometrics() async {
+    List<BiometricType> listOfBiometrics;
+    try {
+      listOfBiometrics = await _localAuthentication.getAvailableBiometrics();
+    } catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
+  }
+
+  Future<void> authenticateUser() async {
+    bool isAuthenticated = false;
+    try {
+      isAuthenticated = await _localAuthentication.authenticate(
+        localizedReason: 'Please authenticate to login',
+        useErrorDialogs: true,
+        stickyAuth: true,
+      );
+    } catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
+    if (isAuthenticated) {
+      print('User authenticated');
+    } else {
+      print('User not authenticated');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,12 +145,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        if (await isBiometricAvailable()) {
+                          await authenticateUser();
+                        } else {
                         _authController.login(
-                            context,
-                            _userIdentifierController.text,
-                            _userIdentifierController.text,
-                            _passwordController.text);
+                        context,
+                        _userIdentifierController.text,
+                        _userIdentifierController.text,
+                        _passwordController.text);
+                        }
+
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, // Text color
@@ -217,3 +268,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
