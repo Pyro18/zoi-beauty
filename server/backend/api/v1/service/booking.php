@@ -29,10 +29,18 @@ function getBooking($bookingId)
 function getAllBookings()
 {
     global $db;
+    // Ottieni le prenotazioni degli utenti registrati
     $query = $db->prepare("SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id");
     $query->execute();
     $bookings = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $bookings;
+
+    // Ottieni le prenotazioni degli utenti non registrati
+    $nonUserBookings = getNonUserBookings();
+
+    // Unisci le prenotazioni degli utenti registrati e non registrati
+    $allBookings = array_merge($bookings, $nonUserBookings);
+
+    return $allBookings;
 }
 
 function createBooking($serviceId, $userId, $dateTime)
@@ -44,6 +52,18 @@ function createBooking($serviceId, $userId, $dateTime)
     $query->bindParam(':servizio_id', $serviceId, PDO::PARAM_INT);
     $query->bindParam(':data_ora', $dateTime);
     return $query->execute();
+}
+
+function getNonUserBookings()
+{
+    global $db;
+
+    $sql = "SELECT * FROM prenotazioni_non_utenti";
+    $query = $db->prepare($sql);
+    $query->execute();
+    $bookings = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return $bookings;
 }
 
 function updateBooking($bookingId, $dateTime)
@@ -70,18 +90,21 @@ $requestData = json_decode(file_get_contents('php://input'), true);
 
 switch ($requestMethod) {
     case 'GET':
-        if (isset($requestData['booking_id'])) {
-            $bookingId = $requestData['booking_id'];
-            $booking = getBooking($bookingId);
-
+        if (isset($_GET['id'])) {
+            $booking = getBooking($_GET['id']);
             if ($booking) {
-                echo createResponse('success', 'Booking fetched successfully.', $booking);
+                echo createResponse('success', 'Booking fetched successfully.', []);
+
             } else {
-                echo createResponse('error', 'Booking not found.', []);
+                http_response_code(404);
+                echo createResponse('error', 'Missing required data.', []);
             }
+            
         } else {
+            // Altrimenti, restituisci tutte le prenotazioni
             $bookings = getAllBookings();
-            echo createResponse('success', 'Bookings fetched successfully.', $bookings);
+            echo createResponse('success', 'Booking fetched successfully.', $bookings);
+
         }
         break;
 

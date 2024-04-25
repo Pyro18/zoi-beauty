@@ -1,217 +1,413 @@
-// Funzione per ottenere tutte le prenotazioni
-function getBookings() {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            if (data.status === 'success') {
-                displayBookings(data.data);
-            } else {
-                console.error('Error fetching bookings:', data.message);
-            }
-        } else {
-            console.error('Error:', xhr.status, xhr.statusText);
-        }
-    };
-    xhr.send();
-}
-
-// Funzione per eliminare un booking
-function deleteBooking(bookingId) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `http://localhost:8080/backend/api/v1/service/booking.php?booking_id=${bookingId}`, true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            if (data.status === 'success') {
-                // Ricarica le prenotazioni dopo l'eliminazione
-                getBookings();
-            } else {
-                console.error('Error deleting booking:', data.message);
-            }
-        } else {
-            console.error('Error:', xhr.status, xhr.statusText);
-        }
-    };
-    xhr.send();
-}
-
-
-
-// Funzione per modificare un booking
-function updateBooking(bookingId, dateTime) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('PUT', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            if (data.status === 'success') {
-                // Ricarica le prenotazioni dopo la modifica
-                getBookings();
-            } else {
-                console.error('Error updating booking:', data.message);
-            }
-        } else {
-            console.error('Error:', xhr.status, xhr.statusText);
-        }
-    };
-    let data = JSON.stringify({
-        booking_id: bookingId,
-        data_ora: dateTime,
-    });
-    xhr.send(data);o
-}
-
-// Funzione per mostrare il modale di modifica
-function showUpdateModal(bookingId, dateTime) {
-    // Mostra il modale
-    let modal = new bootstrap.Modal(document.getElementById('updateModal'));
-    modal.show();
-
-    // Imposta i valori predefiniti nel modale
-    document.getElementById('updateDateTime').value = dateTime;
-
-    // Aggiungi un listener per l'evento di submit del form
-    document.getElementById('updateForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        updateBooking(
-            bookingId,
-            document.getElementById('updateDateTime').value
-        );
-        modal.hide();
-    });
-}
-
-
 // Funzione per ottenere i dettagli dell'utente
 function getUserDetails(user_id) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                let data = JSON.parse(xhr.responseText);
-                if (data.status === 'success') {
-                    resolve(data.data);
-                } else {
-                    console.error('Error fetching user details:', data.message);
-                    reject(data.message);
-                }
-            } else {
-                console.error('Error:', xhr.status, xhr.statusText);
-                reject(xhr.statusText);
-            }
-        };
-        xhr.send();
-    });
+	return new Promise(function(resolve, reject) {
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				let data = JSON.parse(xhr.responseText);
+				if (data.status === 'success') {
+					resolve(data.data);
+				} else {
+					console.error('Error fetching user details:', data.message);
+					reject(data.message);
+				}
+			} else {
+				console.error('Error:', xhr.status, xhr.statusText);
+				reject(xhr.statusText);
+			}
+		};
+		xhr.send();
+	});
 }
 
 // Funzione per ottenere i dettagli del servizio
 function getServiceDetails(service_id) {
-    return new Promise(function (resolve, reject) {
+	return new Promise(function(resolve, reject) {
+		let xhr = new XMLHttpRequest();
+		xhr.open(
+			'GET',
+			`http://localhost:8080/backend/api/v1/service/services.php?service_id=${service_id}`,
+			true
+		);
+		xhr.onload = function() {
+			if (this.status === 200) {
+				let serviceDetails = JSON.parse(this.responseText);
+				resolve(serviceDetails.data);
+			} else {
+				reject(new Error(`Errore: ${this.status} ${this.statusText}`));
+			}
+		};
+		xhr.onerror = function() {
+			reject(new Error('Errore di rete'));
+		};
+		xhr.send();
+	});
+}
+
+// Funzione per aggiungere una prenotazione
+function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhone, userEmail) {
+    return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open(
-            'GET',
-            `http://localhost:8080/backend/api/v1/service/services.php?service_id=${service_id}`,
-            true
-        );
-        xhr.onload = function () {
-            if (this.status === 200) {
-                let serviceDetails = JSON.parse(this.responseText);
-                resolve(serviceDetails.data);
+        let url = 'http://localhost:8080/backend/api/v1/service/booking.php';
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                //console.log(xhr.responseText);
+                let response = JSON.parse(xhr.responseText);
+                resolve(response);
             } else {
-                reject(new Error(`Errore: ${this.status} ${this.statusText}`));
+                reject(xhr.status);
             }
         };
-        xhr.onerror = function () {
-            reject(new Error('Errore di rete'));
+        xhr.onerror = function() {
+            reject(xhr.status);
         };
-        xhr.send();
+
+        let data;
+        if (userId) {
+            data = JSON.stringify({
+                'utente_id': userId,
+                'servizio_id': serviceId,
+                'data_ora': dateTime
+            });
+        } else {
+            console.log('Nome:', userName);
+            console.log('Cognome:', userSurname);
+            console.log('Telefono:', userPhone);
+            console.log('Email:', userEmail);
+
+            data = JSON.stringify({
+                'nome': userName,
+                'cognome': userSurname,
+                'telefono': userPhone,
+                'email': userEmail,
+                'servizio_id': serviceId,
+                'data_ora': dateTime
+            });
+        }
+        xhr.send(data);
     });
 }
 
 
+
+function populateServiceSelect() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/services.php', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let response = JSON.parse(xhr.responseText);
+            if (response.status === 'success') {
+                let services = response.data.services;
+                let select = document.getElementById('serviceSelect');
+                select.innerHTML = '';
+                services.forEach(service => {
+                    let option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.name;
+                    select.appendChild(option);
+                });
+            } else {
+                console.error('Errore nel recupero dei servizi:', response.message);
+            }
+        } else {
+            console.error('Errore:', xhr.status, xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+// Chiamare la funzione quando il documento è pronto
+document.addEventListener("DOMContentLoaded", populateServiceSelect);
+
+// Funzione per ottenere tutte le prenotazioni
+function getBookings() {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/booking.php?', true);
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			try {
+        console.log(xhr.responseText);
+				let data = JSON.parse(xhr.responseText);
+				if (data.status === 'success') {
+					displayBookings(data.data);
+				} else {
+					console.error('Error fetching bookings:', data.message);
+				}
+			} catch (e) {
+				console.error('Error parsing JSON:', e);
+				console.log('Server response:', xhr.responseText);
+			}
+		} else {
+			console.error('Error:', xhr.status, xhr.statusText);
+		}
+	};
+	xhr.send();
+}
+
+// Funzione per eliminare un booking
+function deleteBooking(bookingId) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', `http://localhost:8080/backend/api/v1/service/booking.php?booking_id=${bookingId}`, true);
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			let data = JSON.parse(xhr.responseText);
+			if (data.status === 'success') {
+				// Ricarica le prenotazioni dopo l'eliminazione
+				getBookings();
+			} else {
+				console.error('Error deleting booking:', data.message);
+			}
+		} else {
+			console.error('Error:', xhr.status, xhr.statusText);
+		}
+	};
+	xhr.send();
+}
+
+// Funzione per modificare un booking
+function updateBooking(bookingId, dateTime) {
+	return new Promise((resolve, reject) => {
+		let xhr = new XMLHttpRequest();
+		xhr.open('PUT', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				let data = JSON.parse(xhr.responseText);
+				if (data.status === 'success') {
+					resolve(data);
+				} else {
+					console.error('Error updating booking:', data.message);
+					reject(data.message);
+				}
+			} else {
+				console.error('Error:', xhr.status, xhr.statusText);
+				reject(xhr.statusText);
+			}
+		};
+		let data = JSON.stringify({
+			booking_id: bookingId,
+			data_ora: dateTime,
+		});
+		xhr.send(data);
+	}).catch(error => {
+		console.error('Failed to update booking:', error);
+	});
+}
+
+// Funzione per mostrare il modale di modifica
+function showUpdateModal(bookingId, dateTime) {
+	// Mostra il modale
+	let modal = new bootstrap.Modal(document.getElementById('updateModal'));
+	modal.show();
+	// Imposta i valori predefiniti nel modale
+	document.getElementById('updateDateTime').value = dateTime;
+	// Aggiungi un listener per l'evento di submit del form
+	document.getElementById('updateForm').addEventListener('submit', function(event) {
+		event.preventDefault();
+		updateBooking(
+			bookingId,
+			document.getElementById('updateDateTime').value
+		);
+		modal.hide();
+	});
+}
+
+// !!!!!!! TODO - guardare inserimento !!!!!!!!!
 
 // Funzione per visualizzare le prenotazioni
 async function displayBookings(bookings) {
-    let calendarEl = document.getElementById('calendar');
-
-    let events = [];
-    for (let i = 0; i < bookings.length; i++) {
-        let booking = bookings[i];
-
-        // Creazione di un oggetto Date dalla data e ora della prenotazione
-        let bookingDate = new Date(booking.data_ora);
-
-        // Ottenimento dell'ora e dei minuti
-        let hours = bookingDate.getHours();
-        let minutes = bookingDate.getMinutes();
-
-        // Formattazione dell'ora e dei minuti come stringa HH:MM
-        let timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
-        // Ottenimento dei dettagli dell'utente e del servizio
-        let userDetails = await getUserDetails(booking.utente_id);
-        let serviceDetails = await getServiceDetails(booking.servizio_id);
-
-        // Creazione di un ID univoco per l'evento
-        let eventId = `event-${i}`;
-
-        // Creazione del modale con i dettagli dell'utente
-        let modal = document.createElement('div');
-        modal.classList.add('modal');
-        modal.setAttribute('id', eventId);
-        modal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${booking.servizio_nome}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Nome: ${userDetails.nome}</p>
-                        <p>Cognome: ${userDetails.cognome}</p>
-                        <p>Telefono: ${userDetails.telefono}</p>
-                        <p>Email: ${userDetails.email}</p>
-                        <p>Data e ora: ${booking.data_ora}
-                            <i class="fa-solid fa-pencil" onclick="hideModal('${eventId}'); showUpdateModal(${booking.id}, '${booking.data_ora}')"></i>
-                       
-                        </p>
-                        <button onclick="deleteBooking(${booking.id})">Elimina</button>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        events.push({
-            id: eventId,
-            title: `${userDetails.nome} ${userDetails.cognome} - ${timeString}`,
-            start: booking.data_ora,
-            allDay: true,
-        });
+	let calendarEl = document.getElementById('calendar');
+	let events = [];
+	for (let i = 0; i < bookings.length; i++) {
+		let booking = bookings[i];
+		// Creazione di un oggetto Date dalla data e ora della prenotazione
+		let bookingDate = new Date(booking.data_ora);
+		// Formattazione della data come stringa ISO
+		let isoDate = bookingDate.toISOString();
+		// Ottenimento dell'ora e dei minuti
+		let hours = bookingDate.getHours();
+		let minutes = bookingDate.getMinutes();
+		// Formattazione dell'ora e dei minuti come stringa HH:MM
+		let timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+		// Ottenimento dei dettagli dell'utente e del servizio
+		let userDetails;
+if (booking.utente_id) {
+    try {
+        userDetails = await getUserDetails(booking.utente_id);
+        // Continua con il codice...
+    } catch (error) {
+        console.error('Errore nell\'ottenere i dettagli dell\'utente:', error);
     }
-
-	let calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        events: events,
-        eventClick: function (info) {
-            let modal = new bootstrap.Modal(document.getElementById(info.event.id));
-            modal.show();
-        },
-    });
-
-    calendar.render();
+} else {
+    // Se non c'è un utente_id, assumiamo che la prenotazione sia stata effettuata da un utente non registrato
+    userDetails = {
+        nome: booking.nome,
+        cognome: booking.cognome,
+        telefono: booking.telefono,
+        email: booking.email
+    };
+    
 }
+		let serviceDetails = await getServiceDetails(booking.servizio_id);
+		// Creazione di un ID univoco per l'evento
+		let eventId = `event-${i}`;
+		// Creazione del modale con i dettagli dell'utente
+		let modal = document.createElement('div');
+		modal.classList.add('modal');
+		modal.setAttribute('id', eventId);
+		modal.innerHTML = `
+						<div class="modal-dialog">
+								<div class="modal-content">
+										<div class="modal-header">
+												<h5 class="modal-title">${booking.servizio_nome}</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+												<p>Nome: ${userDetails.nome}</p>
+												<p>Cognome: ${userDetails.cognome}</p>
+												<p>Telefono: ${userDetails.telefono}</p>
+												<p>Email: ${userDetails.email}</p>
+												<p>Data e ora: ${booking.data_ora}
+														<i class="fa-solid fa-pencil" onclick="hideModal('${eventId}'); showUpdateModal(${booking.id}, '${booking.data_ora}')"></i>
+												</p>
+												<button onclick="hideModal('${eventId}'); deleteBooking(${booking.id})">Elimina</button>
+										</div>
+								</div>
+						</div>
+				`;
+		document.body.appendChild(modal);
+		events.push({
+			id: eventId,
+			title: `${userDetails.nome} ${userDetails.cognome} - ${timeString}`,
+			start: isoDate,
+			allDay: true,
+		});
+	}
+	let calendar = new FullCalendar.Calendar(calendarEl, {
+		initialView: 'dayGridMonth',
+		locale: 'it',
+		events: events,
+		editable: true, // Abilita il trascinamento degli eventi
+		eventClick: function(info) {
+			let modal = new bootstrap.Modal(document.getElementById(info.event.id));
+			modal.show();
+		},
+		// TODO - Aggiungi un listener per l'evento drop, al drop mandare la richiesta al server per aggiornare la prenotazione
+		// https://fullcalendar.io/docs/eventDrop
+		// (per ora non funziona)
+		eventDrop: function(info) {
+			let newDate = info.event.start.toISOString();
+			let bookingId = parseInt(info.event.id.replace('event-', '')); // Rimuove 'event-' dall'ID
+
+			// Aggiorna la prenotazione con la nuova data
+			updateBooking(bookingId, newDate);
+		}
+	});
+	calendar.render();
+}
+
+
 
 function hideModal(modalId) {
-    let modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-    modal.hide();
+	let modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+	modal.hide();
 }
 
+// Funzione per mostrare il modale di aggiunta
+function showAddModal() {
+    // Mostra il modale
+    let modal = new bootstrap.Modal(document.getElementById('addModal'));
+    modal.show();
+
+    // Aggiungi un listener per l'evento di input sulla barra di ricerca
+    document.getElementById('searchUser').addEventListener('input', function() {
+			let q = $(this).val();
+	
+			$.ajax({
+					url: 'http://localhost:8080/backend/api/v1/user/users.php',
+					type: 'GET',
+					data: {
+							q: q
+					},
+					dataType: 'json',
+					success: function(data) {
+							if (data.status === 'success') {
+									let datalist = document.getElementById('userList');
+									datalist.innerHTML = '';
+									data.data.forEach(user => {
+											let option = document.createElement('option');
+											option.value = user.nome + ' ' + user.cognome;
+											option.setAttribute('data-nome', user.nome);
+											option.setAttribute('data-cognome', user.cognome);
+											option.setAttribute('data-telefono', user.telefono);
+											option.setAttribute('data-email', user.email);
+                      option.setAttribute('data-id', user.id);
+											datalist.appendChild(option);
+									});
+							} else {
+									$('#searchUser').val('');
+							}
+					},
+					error: function() {
+							console.error('Error fetching user details');
+					}
+			});
+	});
+
+    document.getElementById('searchUser').addEventListener('input', function() {
+        let inputVal = this.value;
+        let options = document.querySelectorAll('#userList option');
+
+        options.forEach(option => {
+            if (option.value === inputVal) {
+                document.getElementById('userName').value = option.getAttribute('data-nome');
+                document.getElementById('userSurname').value = option.getAttribute('data-cognome');
+                document.getElementById('userPhone').value = option.getAttribute('data-telefono');
+                document.getElementById('userEmail').value = option.getAttribute('data-email');
+                document.getElementById('userId').value = option.getAttribute('data-id'); // recupero l'id per l'invio della prenotazione
+            }
+        });
+    });
+	
+}
+
+// Aggiungi un listener per il click del pulsante di aggiunta
+document.getElementById('addBookingButton').addEventListener('click', showAddModal);
+
+
+// Aggiungi un listener per il click del pulsante di aggiunta
+document.getElementById('addBookingButton').addEventListener('click', showAddModal);
 
 // Chiamata alla funzione getBookings quando la pagina viene caricata
-window.onload = getBookings;
+window.onload = function() {
+    getBookings(true); // true per includere le prenotazioni dei non utenti
+};
+
+// Aggiungi un listener per l'evento di invio del form di aggiunta prenotazione
+document.getElementById('addForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let userId = document.getElementById('userId').value;
+    let serviceId = document.getElementById('serviceSelect').value;
+    let dateTime = document.getElementById('dateTime').value;
+    let userName = document.getElementById('userName').value;
+    let userSurname = document.getElementById('userSurname').value;
+    let userPhone = document.getElementById('userPhone').value;
+    let userEmail = document.getElementById('userEmail').value;
+
+    addBooking(userId, serviceId, dateTime, userName, userSurname, userPhone, userEmail)
+        .then(function(response) {
+            console.log(response);
+            // Aggiorna il calendario o mostra un messaggio di successo
+            getBookings();
+        })
+        .catch(function(error) {
+            console.error(error);
+            // Mostra un messaggio di errore
+
+        });
+});
+
