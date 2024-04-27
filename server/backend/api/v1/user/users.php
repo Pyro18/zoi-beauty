@@ -13,6 +13,19 @@ function createResponse($status, $message, $data = null)
 	]);
 }
 
+function getAllUsers()
+{
+	global $db;
+
+	$sql = "SELECT id, username, nome, cognome, telefono, email FROM utenti";
+	$query = $db->prepare($sql);
+	$query->execute();
+	$users = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	return $users;
+
+}
+
 function getUser($userId)
 {
 	global $db;
@@ -56,6 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 			echo createResponse('error', 'No users found.', []);
 		}
 	} else {
-		echo createResponse('error', 'Invalid request method.', []);
+		$users = getAllUsers();
+		if ($users) {
+			echo createResponse('success', 'Users fetched successfully.', $users);
+		} else {
+			echo createResponse('error', 'No users found.', []);
+		}
 	}
-}
+} 

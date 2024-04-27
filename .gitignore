@@ -1,0 +1,15 @@
+# File temporanei
+*.tmp
+*.temp
+*.bak
+
+# File di log
+*.log
+
+# File di configurazione dell'editor
+*.vscode
+*.idea
+
+# Directory di build
+/build
+/dist

@@ -1,5 +1,7 @@
 console.log('admin_login.js loaded');
 
+
+
 document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
