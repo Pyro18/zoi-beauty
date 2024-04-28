@@ -57,6 +57,7 @@ $routes = [
     '/register' => 'RegisterController@index',
     '/admin/dashboard' => 'AdminController@dashboard',
     '/admin/login' => 'LoginController@adminLogin',
+    '/user/profile' => 'UserController@profile',
 ];
 
 $router = new Router($routes);

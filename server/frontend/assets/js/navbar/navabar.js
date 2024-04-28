@@ -58,7 +58,7 @@ window.onload = function() {
                                 <img src="/frontend/assets/images/512x512.png" alt="User Avatar" class="rounded-circle dropdown-toggle" width="45" height="45" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span style="color: black">${data.data.nome} ${data.data.cognome}</span>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="/user/profile">Profilo</a></li>
                                     <li><a class="dropdown-item" id="logout-link" href="#" onclick="logout()">Logout</a></li>
                                 </ul>
                             </div>

@@ -26,6 +26,27 @@ function getAllUsers()
 
 }
 
+
+
+// Quando crei un nuovo utente
+function createUser($username, $nome, $cognome, $telefono, $email)
+{
+    global $db;
+
+    $pfp = getRandomProfilePicture();
+
+    $sql = "INSERT INTO utenti (username, nome, cognome, telefono, email, pfp) VALUES (:username, :nome, :cognome, :telefono, :email, :pfp)";
+    $query = $db->prepare($sql);
+    $query->bindParam(':username', $username, PDO::PARAM_STR);
+    $query->bindParam(':nome', $nome, PDO::PARAM_STR);
+    $query->bindParam(':cognome', $cognome, PDO::PARAM_STR);
+    $query->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
+    $query->bindParam(':pfp', $pfp, PDO::PARAM_STR);
+    $query->execute();
+}
+
+
 function getUser($userId)
 {
 	global $db;
@@ -50,12 +71,34 @@ function liveSearch($q)
 	return $users;
 }
 
+function pfp($userId)
+{
+	global $db;
+	$sql = "SELECT id, pfp FROM utenti WHERE id = :userId";
+	$query = $db->prepare($sql);
+	$query->bindParam(':userId', $userId, PDO::PARAM_INT);
+	$query->execute();
+	$pfp = $query->fetch(PDO::FETCH_ASSOC);
+	return $pfp;
+}
+
+function getRandomProfilePicture()
+{
+    $dir = '../../../frontend/assets/images/profile';
+    $files = glob($dir . '/*.*');
+    $file = array_rand($files);
+    return $files[$file];
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	if (isset($_GET['user_id'])) {
 		$userId = $_GET['user_id'];
 		$user = getUser($userId);
+        $pfp = pfp($userId);
 
 		if ($user) {
+            $user['pfp'] = $pfp['pfp'];
 			echo createResponse('success', 'User fetched successfully.', $user);
 		} else {
 			echo createResponse('error', 'User not found.', []);
@@ -76,4 +119,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 			echo createResponse('error', 'No users found.', []);
 		}
 	}
-} 
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $username = $data['username'];
+    $nome = $data['nome'];
+    $cognome = $data['cognome'];
+    $telefono = $data['telefono'];
+    $email = $data['email'];
+
+    createUser($username, $nome, $cognome, $telefono, $email);
+    echo createResponse('success', 'User created successfully.', []);
+} else {
+    echo createResponse('error', 'Method not allowed.', []);
+}
