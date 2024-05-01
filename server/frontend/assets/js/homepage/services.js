@@ -4,6 +4,8 @@
  * Gestisce anche le interazioni dell'utente come la selezione di una categoria, tipo o servizio.
  */
 
+console.log('Script caricato con successo.');
+
 document.addEventListener("DOMContentLoaded", function() {
     // stati iniziali
     let activeCategory = 0; // La categoria attiva è impostata su tutti i servizi (0 = "TUTTI")
@@ -359,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function() {
     };
     xhr.send(jsonData);
 });
-
 
 
     // Gestisci gli eventi di click sul documento

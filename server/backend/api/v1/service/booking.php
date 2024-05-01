@@ -48,6 +48,15 @@ function createBooking($serviceId, $userId, $dateTime)
     $query->bindParam(":servizio_id", $serviceId, PDO::PARAM_INT);
     $query->bindParam(":data_ora", $dateTime);
     return $query->execute();
+
+    //if ($result) {
+    //    $to = "email";
+    //    $subject = "Prenotazione effettuata";
+    //    $message = "Grazie per aver effettuato una prenotazione. \n\nDettagli della prenotazione:\nServizio ID: $serviceId\nData e ora: $dateTime";
+    //    $headers = "From: noreply@";
+    //    mail($to, $subject, $message, $headers);
+    //}
+    //return $result;
 }
 
 function updateBooking($bookingId, $dateTime)

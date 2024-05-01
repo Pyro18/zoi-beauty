@@ -34,7 +34,8 @@ class Router {
 
             $controllerInstance->$method();
         } else {
-            echo '404 - Pagina non trovata';
+            //echo '404 - Pagina non trovata';
+            require_once $_SERVER['DOCUMENT_ROOT'] . '/frontend/components/error/page_404.php';
             exit;
         }
     }
@@ -57,7 +58,7 @@ $routes = [
     '/register' => 'RegisterController@index',
     '/admin/dashboard' => 'AdminController@dashboard',
     '/admin/login' => 'LoginController@adminLogin',
-    '/user/profile' => 'UserController@profile',
+    '/user/profilo' => 'UserController@profile',
 ];
 
 $router = new Router($routes);

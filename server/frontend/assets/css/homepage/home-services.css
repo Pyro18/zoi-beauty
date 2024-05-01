@@ -39,6 +39,27 @@
     }
 }
 
+
+.Book {
+    width: 95%;
+    height: 3em;
+    margin: 0.5em auto 0;
+    background-color: #d3d3d3;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8em;
+    text-align: center;
+    text-decoration: none;
+    line-height: 3em;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.Book:hover {
+    background-color: #a28282;
+}
+
+
 .Services {
     width: 100%;
 }

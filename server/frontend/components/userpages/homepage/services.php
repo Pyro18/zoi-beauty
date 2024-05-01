@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/frontend/assets/css/homepage/home-services.css">
+    <link rel="stylesheet" href="\frontend\assets\css\homepage\home-services.css">
 
     <link
             rel="stylesheet"
@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col">
             <section class="section">
-                <div class="meta">Welcome to</div>
+                <div class="meta">What we do</div>
                 <h2 class="name">[ SERVICES ]</h2>
                 <p class="description">Vestibulum ut mauris euismod, tristique augue sed, consequat metus. Duis fermentum massa ac metus suscipit tincidunt. Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
             </section>
@@ -56,16 +56,13 @@
 
 
 <div class="Services">
-    <div class="Categories">
-
-    </div>
-    <div class="Types">
-
-    </div>
-    <div class="Services service-container">
-
-    </div>
-    <a class="Book">Book now</a>
+  <div class="Categories">
+  </div>
+  <div class="Types">
+  </div>
+  <div class="Services service-container">
+  </div>
+  <a class="Book">Book now</a>
 </div>
 
 

@@ -38,12 +38,10 @@ function logout() {
 }
 
 window.onload = function() {
-    // Funzione per caricare i dati dell'utente
     function loadUserData() {
-        // prendo l'user_id dal cookie
+        // l'user_id dal cookie
         let user_id = getCookie('user_id');
 
-        // controllo se l'utente è loggato
         if (user_id != "") {
             // l'utente è loggato, quindi carico i suoi dati
             let xhr = new XMLHttpRequest();
@@ -52,20 +50,25 @@ window.onload = function() {
                 if (xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText);
                     if (data.status === 'success') {
-                        // Insert user avatar, name and dropdown menu into #user-info
+                        // Genera un numero casuale tra 1 e 9
+                        let randomImageNumber = Math.floor(Math.random() * 9) + 1;
+
+                        // Insert user image, name and dropdown menu into #user-info
                         document.getElementById('user-info').innerHTML = `
                             <div class="dropdown">
-                                <img src="/frontend/assets/images/512x512.png" alt="User Avatar" class="rounded-circle dropdown-toggle" width="45" height="45" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span style="color: black">${data.data.nome} ${data.data.cognome}</span>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="/user/profile">Profilo</a></li>
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="/frontend/assets/images/profile/${randomImageNumber}.png" width="45" height="45" style="border-radius: 50%;">
+                                    <span class="ms-2">${data.data.nome} ${data.data.cognome}</span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="/user/profilo">Profilo</a></li>
                                     <li><a class="dropdown-item" id="logout-link" href="#" onclick="logout()">Logout</a></li>
                                 </ul>
                             </div>
                         `;
 
                         // aggiungo l'evento click al link di logout
-                        var logoutLink = document.querySelector('#logout-link');
+                        let logoutLink = document.querySelector('#logout-link');
                         if (logoutLink) {
                             logoutLink.addEventListener('click', function(e) {
                                 e.preventDefault();
@@ -88,6 +91,8 @@ window.onload = function() {
             `;
         }
     }
+
+
 
     // caricamento dei dati dell'utente
     loadUserData();

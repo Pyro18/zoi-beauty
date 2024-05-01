@@ -89,3 +89,16 @@
     background: #d6bcbc
 }
 
+.dropdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown div {
+    display: inline-block;
+}
+
+.dropdown span {
+    display: inline-block;
+}
