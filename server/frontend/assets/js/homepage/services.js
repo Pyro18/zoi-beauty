@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const categoryElement = document.createElement('div');
             categoryElement.classList.add('Category');
             categoryElement.innerHTML = `
-                <img src="category${category.id}.png" alt="${category.name}">
+                <img src="/frontend/assets/images/category${category.id}.svg" alt="${category.name}">
                 <p>${category.name}</p>
             `;
             categoryElement.addEventListener('click', () => {
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
             typeElement.innerHTML = `
                 <p class="Name">${type.name}</p>
                 <div class="Contain"></div>
-                <img class="Expand" src="expand.png" alt="Expand">
+                <img class="Expand" src="/frontend/assets/images/expand.png" alt="Expand">
             `;
             typeElement.addEventListener('click', () => {
                 switchType(type.id);

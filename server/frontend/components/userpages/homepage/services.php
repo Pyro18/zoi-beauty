@@ -77,7 +77,6 @@
       </div>
       <div class="modal-body">
         <form id="bookingForm" method="post">
-          <!-- Aggiungi qui i campi del form per i dettagli della prenotazione -->
           <div class="mb-3">
             <label for="bookingDate" class="form-label">Data</label>
             <input type="date" class="form-control" id="bookingDate" name="date">

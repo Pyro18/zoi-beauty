@@ -55,9 +55,9 @@
             </div>
 
             <div class="images">
-                <img class="image active" src="/frontend/assets/images/720x480.png" alt="Beauty Salon">
-                <img class="image" src="/frontend/assets/images/720x480.png" alt="Beauty Salon">
-                <img class="image" src="/frontend/assets/images/720x480.png" alt="Beauty Salon">
+                <img class="image active" src="/frontend/assets/images/1.jpg" alt="Beauty Salon">
+                <img class="image" src="/frontend/assets/images/2.jpg" alt="Beauty Salon">
+                <img class="image" src="/frontend/assets/images/3.jpg" alt="Beauty Salon">
             </div>
         </div>
 
