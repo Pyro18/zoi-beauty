@@ -3,7 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  local_auth_windows
+  objectbox_flutter_libs
+  rive_common
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
