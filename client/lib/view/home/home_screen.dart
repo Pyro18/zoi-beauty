@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../../models/booking.dart';
-import 'components/card.dart';
-import 'components/secondary_card.dart';
+import '../../models/booking_model.dart';
+import '../../models/past_booking_model.dart';
+import 'components/active_booking_card.dart';
+import 'components/past_booking_card.dart';
 
-class HomePage extends StatelessWidget {
+import 'package:dotted_border/dotted_border.dart';
+import '../../controllers/booking_controller.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final BookingController bookingController = BookingController();
+
+  @override
+  void initState() {
+    super.initState();
+    bookingController.checkBookings();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bookingController = BookingController();
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -25,22 +43,177 @@ class HomePage extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: courses
-                      .map(
-                        (course) => Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: CourseCard(
-                            title: course.title,
-                            iconSrc: course.iconSrc,
-                            color: course.color,
+              FutureBuilder<List<Booking>>(
+                future: bookingController.fetchActiveBookings('10'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    // Crea una lista di widget GestureDetector
+                    List<Widget> bookingCards = snapshot.data!
+                        .map((booking) => GestureDetector(
+                              onLongPress: () async {
+                                final confirm = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Conferma'),
+                                      content: Text(
+                                          'Sei sicuro di voler eliminare questa prenotazione?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Annulla'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Conferma'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                if (confirm) {
+                                  final result = await bookingController
+                                      .deleteBooking(booking.id);
+                                  if (result) {
+                                    // Aggiorna l'interfaccia utente
+                                    setState(() {});
+                                  } else {
+                                    // Gestisci l'errore
+                                  }
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: BookingCard(
+                                  title: booking.title,
+                                  iconSrc: booking.iconSrc,
+                                  color: booking.color,
+                                  date: booking.date,
+                                  time: booking.time,
+                                ),
+                              ),
+                            ))
+                        .toList();
+
+                    bookingCards.add(
+                      GestureDetector(
+                        onTap: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now().add(Duration(days: 365)),
+                          ).then((pickedDate) {
+                            if (pickedDate == null) {
+                              return;
+                            }
+                            showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            ).then((pickedTime) {
+                              if (pickedTime == null) {
+                                return;
+                              }
+                              final dateTime = DateTime(
+                                pickedDate.year,
+                                pickedDate.month,
+                                pickedDate.day,
+                                pickedTime.hour,
+                                pickedTime.minute,
+                              );
+                              final date =
+                                  '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+                              final time =
+                                  '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:00';
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  String serviceId = '';
+                                  return AlertDialog(
+                                    title: Text('Nuova Prenotazione'),
+                                    content: Column(
+                                      children: <Widget>[
+                                        TextField(
+                                          onChanged: (value) {
+                                            serviceId = value;
+                                          },
+                                          decoration: InputDecoration(
+                                              hintText:
+                                                  "Inserisci l'ID del servizio"),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Annulla'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Conferma'),
+                                        onPressed: () async {
+                                          final result = await bookingController
+                                              .addBooking(
+                                                  '10', serviceId, date, time);
+                                          if (result) {
+                                            // Aggiorna l'interfaccia utente
+                                            setState(() {});
+                                          } else {
+                                            // Gestisci l'errore
+                                          }
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 24),
+                          child: DottedBorder(
+                            dashPattern: const [10, 10],
+                            strokeWidth: 3,
+                            color: Colors.grey,
+                            borderType: BorderType.RRect,
+                            radius: Radius.circular(30),
+                            child: Container(
+                              height: 270,
+                              width: 250,
+                              child: const Center(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
+                      ),
+                    );
+                    // Restituisce un SingleChildScrollView con la lista di bookingCards
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: bookingCards,
+                      ),
+                    );
+                  }
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -50,17 +223,37 @@ class HomePage extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-              ...recentCourses
-                  .map((course) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, bottom: 20),
-                        child: SecondaryCourseCard(
-                          title: course.title,
-                          iconsSrc: course.iconSrc,
-                          colorl: course.color,
-                        ),
-                      ))
-                  .toList(),
+              // StreamBuilder<List<PastBooking>>(
+              //   stream: bookingController.fetchPastBookings(),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return CircularProgressIndicator();
+              //     } else if (snapshot.hasError) {
+              //       print(snapshot.error);
+              //       return Text('Error: ${snapshot.error}');
+              //     } else {
+              //       // Crea una lista di widget PastBookingCard
+              //       List<Widget> pastBookingCards = snapshot.data!
+              //           .asMap()
+              //           .entries
+              //           .map((entry) => Flexible(
+              //                 fit: FlexFit.loose,
+              //                 child: PastBookingCard(entry.value,
+              //                     index: entry.key),
+              //               ))
+              //           .toList();
+              //       // Restituisce un SingleChildScrollView con la lista di pastBookingCards
+              //       return SingleChildScrollView(
+              //         scrollDirection: Axis.horizontal,
+              //         child: Container(
+              //           child: Row(
+              //             children: pastBookingCards,
+              //           ),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),

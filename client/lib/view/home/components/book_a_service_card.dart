@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SecondaryCourseCard extends StatelessWidget {
-  const SecondaryCourseCard({
+class SecondaryBookingCard extends StatelessWidget {
+  const SecondaryBookingCard({
     Key? key,
     required this.title,
     this.iconsSrc = "assets/icons/ios.svg",
@@ -34,7 +34,7 @@ class SecondaryCourseCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  "Watch video - 15 mins",
+                  "testino piccino",
                   style: TextStyle(
                     color: Colors.white60,
                     fontSize: 16,

@@ -69,13 +69,13 @@ List<Menu> bottomNavItems = [
         artboard: "SEARCH",
         stateMachineName: "SEARCH_Interactivity"),
   ),
-  Menu(
-    title: "Timer",
-    rive: RiveModel(
-        src: "assets/RiveAssets/icons.riv",
-        artboard: "TIMER",
-        stateMachineName: "TIMER_Interactivity"),
-  ),
+  // Menu(
+  //   title: "Timer",
+  //   rive: RiveModel(
+  //       src: "assets/RiveAssets/icons.riv",
+  //       artboard: "TIMER",
+  //       stateMachineName: "TIMER_Interactivity"),
+  // ),
   Menu(
     title: "Notification",
     rive: RiveModel(

@@ -1,3 +1,4 @@
+import 'package:client/controllers/auth_controller.dart';
 import 'package:client/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +17,22 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   Menu selectedSideMenu = sidebarMenus.first;
   final UserController userController = UserController();
-  Future<String>? username;
+  final AuthController authController = AuthController();
+  String? name;
 
   @override
   void initState() {
     super.initState();
-    username = userController.getUserName("10");
+    getName();
+  }
+
+  void getName() async {
+    var user = await authController.getLoggedInUser();
+    if (user != null) {
+      setState(() {
+        name = user.username;
+      });
+    }
   }
 
 
@@ -42,21 +53,11 @@ class _SideBarState extends State<SideBar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder<String>(
-                future: username,
-                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return InfoCard(
-                      bio: "Your bio here", // replace with actual bio
-                      name: snapshot.data!,
-                    );
-                  }
-                },
-              ),
+              if (name != null) // Check if name is not null
+                InfoCard(
+                  bio: "Welcome Back", // replace with actual bio
+                  name: name!,
+                ),
               Padding(
                 padding: const EdgeInsets.only(left: 24, top: 32, bottom: 16),
                 child: Text(

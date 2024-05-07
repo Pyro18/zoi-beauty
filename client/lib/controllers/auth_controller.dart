@@ -7,7 +7,8 @@ import 'package:client/objectbox.g.dart';
 
 class AuthController {
   final Api api = Api();
-  Box<User>? _userBox;
+  static Store? _store;
+  static Box<User>? _userBox;
   late Future<void> _initFuture;
 
   AuthController() {
@@ -15,11 +16,11 @@ class AuthController {
   }
 
   Future<void> _initObjectBox() async {
-    if (_userBox == null) {
+    if (_store == null) {
       final directory = await path_provider.getApplicationDocumentsDirectory();
       print('Directory: ${directory.path}');
-      final store = Store(getObjectBoxModel(), directory: directory.path + '/objectbox');
-      _userBox = store.box<User>();
+      _store = Store(getObjectBoxModel(), directory: '${directory.path}/objectbox');
+      _userBox = _store!.box<User>();
     }
   }
 
@@ -28,9 +29,8 @@ class AuthController {
     return this;
   }
 
-  @override
   void dispose() {
-    _userBox?.close();
+    _store?.close();
   }
 
   Future<bool> login(
@@ -76,5 +76,4 @@ class AuthController {
     }
     return User(username: '', password: '');
   }
-
 }

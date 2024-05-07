@@ -21,23 +21,23 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(1, 3898219097965916535),
+      id: const obx_int.IdUid(1, 4211758640944777510),
       name: 'User',
-      lastPropertyId: const obx_int.IdUid(3, 2600023577137742575),
+      lastPropertyId: const obx_int.IdUid(4, 7386161119280367505),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 7425541356112575378),
+            id: const obx_int.IdUid(1, 714861088017282599),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 588057982430518762),
+            id: const obx_int.IdUid(2, 1730268447754981833),
             name: 'username',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 2600023577137742575),
+            id: const obx_int.IdUid(3, 2095352613731174258),
             name: 'password',
             type: 9,
             flags: 0)
@@ -81,13 +81,23 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(1, 3898219097965916535),
+      lastEntityId: const obx_int.IdUid(2, 2629155387004082526),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [2629155387004082526],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        7386161119280367505,
+        3506911959365810723,
+        395024275234246450,
+        6238880969609761214,
+        6087228254414447719,
+        1107304091487977954,
+        6603036342332341548,
+        4115055402870953790,
+        205919657745191511
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -105,7 +115,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (User object, fb.Builder fbb) {
           final usernameOffset = fbb.writeString(object.username);
           final passwordOffset = fbb.writeString(object.password);
-          fbb.startTable(4);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, usernameOffset);
           fbb.addOffset(2, passwordOffset);

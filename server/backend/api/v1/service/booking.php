@@ -25,13 +25,14 @@ function getBooking($bookingId)
     return $booking;
 }
 
-function getAllBookings()
+function getAllBookings($userId)
 {
     global $db;
-    // Ottieni le prenotazioni degli utenti registrati
+    // Ottieni le prenotazioni per un utente specifico
     $query = $db->prepare(
-        "SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id"
+        "SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id WHERE prenotazioni.utente_id = :user_id"
     );
+    $query->bindParam(":user_id", $userId, PDO::PARAM_INT);
     $query->execute();
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
     return $result;
@@ -91,20 +92,23 @@ switch ($requestMethod) {
                 echo createResponse(
                     "success",
                     "Booking fetched successfully.",
-                    []
+                    [$booking]
                 );
             } else {
                 http_response_code(404);
                 echo createResponse("error", "Missing required data.", []);
             }
-        } else {
-            // Altrimenti, restituisci tutte le prenotazioni
-            $bookings = getAllBookings();
+        } elseif (isset($_GET["user_id"])) {
+            // Altrimenti, restituisci tutte le prenotazioni per un utente specifico
+            $bookings = getAllBookings($_GET["user_id"]);
             echo createResponse(
                 "success",
                 "Booking fetched successfully.",
                 $bookings
             );
+        } else {
+            http_response_code(400);
+            echo createResponse("error", "Missing user_id parameter.", []);
         }
         break;
 
