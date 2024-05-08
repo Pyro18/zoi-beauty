@@ -1,6 +1,9 @@
 import 'package:client/controllers/booking_controller.dart';
+import 'package:client/controllers/service_controller.dart';
+import 'package:client/models/service_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class BookingCard extends StatefulWidget {
   final String title, iconSrc, date, time;
@@ -24,6 +27,18 @@ class BookingCard extends StatefulWidget {
 }
 
 class _BookingCardState extends State<BookingCard> {
+  ServiceController serviceController = ServiceController();
+  String? selectedService;
+  String? selectedDate;
+  String? selectedTime;
+
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    final format = DateFormat('HH:mm');  // formato 24h
+    return format.format(dt);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,22 +95,44 @@ class _BookingCardState extends State<BookingCard> {
                             content: Column(
                               children: <Widget>[
                                 TextField(
-                                  controller: serviceNameController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Nome del servizio',
-                                  ),
-                                ),
-                                TextField(
                                   controller: dateController,
                                   decoration: InputDecoration(
                                     labelText: 'Data',
                                   ),
+                                  onTap: () async {
+                                    final date = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now().add(Duration(days: 365)),
+                                    );
+                                    if (date != null) {
+                                      selectedDate = DateFormat('yyyy-MM-dd').format(date);
+                                      dateController.text = selectedDate!;
+                                    }
+                                  },
                                 ),
                                 TextField(
                                   controller: timeController,
                                   decoration: InputDecoration(
                                     labelText: 'Ora',
                                   ),
+                                  onTap: () async {
+                                    final time = await showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now(),
+                                      builder: (BuildContext context, Widget? child) {
+                                        return MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                                          child: child!,
+                                        );
+                                      },
+                                    );
+                                    if (time != null) {
+                                      selectedTime = formatTimeOfDay(time);
+                                      timeController.text = selectedTime!;
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -109,14 +146,15 @@ class _BookingCardState extends State<BookingCard> {
                               TextButton(
                                 child: Text('Conferma'),
                                 onPressed: () async {
-                                  // Quando l'utente fa clic su "Conferma", chiama `updateBooking` con i nuovi dettagli della prenotazione
+                                  final dateTime = dateController.text + ' ' + timeController.text;
+                                  final date = dateTime.split(' ')[0];
+                                  final time = dateTime.split(' ')[1];
                                   final result = await widget.bookingController.updateBooking(
                                     widget.bookingId,
-                                    dateController.text,
-                                    timeController.text,
+                                    date,
+                                    time,
                                   );
                                   if (result) {
-                                    // Aggiorna l'interfaccia utente
                                     setState(() {});
                                   } else {
                                     // Gestisci l'errore
