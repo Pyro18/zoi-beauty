@@ -10,6 +10,7 @@ class BtmNavItem extends StatelessWidget {
   const BtmNavItem(
       {super.key,
         required this.navBar,
+        
         required this.press,
         required this.riveOnInit,
         required this.selectedNav});
