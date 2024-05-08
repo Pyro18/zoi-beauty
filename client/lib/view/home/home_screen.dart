@@ -1,12 +1,15 @@
+import 'package:client/notifier/BookingNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/booking_model.dart';
 import '../../models/past_booking_model.dart';
 import 'components/active_booking_card.dart';
 import 'components/past_booking_card.dart';
-
+import 'package:client/controllers/booking_controller.dart';
+import 'package:client/controllers/service_controller.dart';
+import 'package:client/models/service_model.dart';
 import 'package:dotted_border/dotted_border.dart';
-import '../../controllers/booking_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final BookingController bookingController = BookingController();
+  final ServiceController serviceController = ServiceController();
 
   @override
   void initState() {
@@ -24,9 +28,22 @@ class _HomePageState extends State<HomePage> {
     bookingController.checkBookings();
   }
 
+  void refreshPage() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final bookingController = BookingController();
+    final bookingNotifier = Provider.of<BookingNotifier>(context);
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (bookingNotifier.isBookingUpdated) {
+        bookingController.updateBookings();
+        bookingNotifier.setBookingUpdated(false);
+      }
+    });
+
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -43,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
+
               FutureBuilder<List<Booking>>(
                 future: bookingController.fetchActiveBookings('10'),
                 builder: (context, snapshot) {
@@ -60,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('Conferma'),
+                                      title: const Text('Conferma'),
                                       content: Text(
                                           'Sei sicuro di voler eliminare questa prenotazione?'),
                                       actions: <Widget>[
@@ -99,6 +117,8 @@ class _HomePageState extends State<HomePage> {
                                   color: booking.color,
                                   date: booking.date,
                                   time: booking.time,
+                                  bookingId: booking.id,
+                                  bookingController: bookingController,
                                 ),
                               ),
                             ))
@@ -137,44 +157,63 @@ class _HomePageState extends State<HomePage> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  String serviceId = '';
-                                  return AlertDialog(
-                                    title: Text('Nuova Prenotazione'),
-                                    content: Column(
-                                      children: <Widget>[
-                                        TextField(
-                                          onChanged: (value) {
-                                            serviceId = value;
-                                          },
-                                          decoration: InputDecoration(
-                                              hintText:
-                                                  "Inserisci l'ID del servizio"),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('Annulla'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text('Conferma'),
-                                        onPressed: () async {
-                                          final result = await bookingController
-                                              .addBooking(
-                                                  '10', serviceId, date, time);
-                                          if (result) {
-                                            // Aggiorna l'interfaccia utente
-                                            setState(() {});
-                                          } else {
-                                            // Gestisci l'errore
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
+                                  String? serviceId;
+                                  return FutureBuilder<List<Service>>(
+                                    future: serviceController.fetchServices(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        return AlertDialog(
+                                          title: Text('Nuova Prenotazione'),
+                                          content: Column(
+                                            children: <Widget>[
+                                              DropdownButton<String>(
+                                                hint: Text("Seleziona un servizio"),
+                                                value: serviceId,
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    serviceId = newValue;
+                                                  });
+                                                },
+                                                items: snapshot.data!.map<DropdownMenuItem<String>>((Service service) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: service.id,
+                                                    child: Text(service.name),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ],
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text('Annulla'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('Conferma'),
+                                              onPressed: () async {
+                                                if (serviceId != null) {
+                                                  final result = await bookingController.addBooking('10', serviceId!, date, time);
+                                                  if (result) {
+                                                    // Aggiorna l'interfaccia utente
+                                                    setState(() {});
+                                                  } else {
+                                                    // Gestisci l'errore
+                                                  }
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                    },
                                   );
                                 },
                               );
@@ -215,6 +254,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
+
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
@@ -256,6 +296,14 @@ class _HomePageState extends State<HomePage> {
               // ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 60.0),
+        child: FloatingActionButton(
+          onPressed: refreshPage,
+          child: Icon(Icons.refresh),
+          backgroundColor: Colors.blue,
         ),
       ),
     );

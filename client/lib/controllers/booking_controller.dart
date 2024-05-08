@@ -3,10 +3,23 @@ import 'package:client/models/past_booking_model.dart';
 import 'package:client/network/api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:async';
 
 class BookingController {
   final Api api = Api();
   List<Booking> bookings = [];
+  final StreamController<List<Booking>> _bookingStreamController = StreamController<List<Booking>>();
+
+  Stream<List<Booking>> get fetchActiveBookingsStream => _bookingStreamController.stream;
+
+  void updateBookings() async {
+    List<Booking> bookings = await fetchActiveBookings('10');
+    _bookingStreamController.add(bookings);
+  }
+
+  void dispose() {
+    _bookingStreamController.close();
+  }
 
   Future<Database> _initDb() async {
     return openDatabase(
@@ -109,6 +122,17 @@ class BookingController {
       print('Booking created');
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> updateBooking(int bookingId, String date, String time) async {
+    final response = await api.updateBooking(bookingId, date, time);
+    if (response) {
+      print('Booking updated');
+      return true;
+    } else {
+      print('Failed to update booking');
       return false;
     }
   }

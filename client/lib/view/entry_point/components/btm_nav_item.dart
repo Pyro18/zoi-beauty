@@ -1,3 +1,5 @@
+import 'package:client/view/home/home_screen.dart';
+import 'package:client/view/home/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -7,10 +9,10 @@ import 'animated_bar.dart';
 class BtmNavItem extends StatelessWidget {
   const BtmNavItem(
       {super.key,
-      required this.navBar,
-      required this.press,
-      required this.riveOnInit,
-      required this.selectedNav});
+        required this.navBar,
+        required this.press,
+        required this.riveOnInit,
+        required this.selectedNav});
 
   final Menu navBar;
   final VoidCallback press;

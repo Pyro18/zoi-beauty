@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:client/view/home/promotion_screen.dart';
+import 'package:client/view/home/service_screen.dart';
+import 'package:client/view/home/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:client/utils/constants.dart';
@@ -24,8 +27,16 @@ class _EntryPointState extends State<EntryPoint>
 
   Menu selectedBottonNav = bottomNavItems.first;
   Menu selectedSideMenu = sidebarMenus.first;
+  int _currentIndex = 0;
 
   late SMIBool isMenuOpenInput;
+
+  final _page = [
+    HomePage(),
+    ServicePage(),
+    PromotionPage(title: 'Promozioni'),
+    UserPage(),
+  ];
 
   void updateSelectedBtmNav(Menu menu) {
     if (selectedBottonNav != menu) {
@@ -88,11 +99,14 @@ class _EntryPointState extends State<EntryPoint>
               offset: Offset(animation.value * 265, 0),
               child: Transform.scale(
                 scale: scalAnimation.value,
-                child: const ClipRRect(
-                  borderRadius: BorderRadius.all(
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(24),
                   ),
-                  child: HomePage(),
+                  child: IndexedStack(
+                    index: _currentIndex,
+                    children: _page,
+                  ),
                 ),
               ),
             ),
@@ -161,7 +175,10 @@ class _EntryPointState extends State<EntryPoint>
                       navBar: navBar,
                       press: () {
                         RiveUtils.chnageSMIBoolState(navBar.rive.status!);
-                        updateSelectedBtmNav(navBar);
+                        setState(() {
+                          _currentIndex = index % _page.length;
+                          updateSelectedBtmNav(navBar);
+                        });
                       },
                       riveOnInit: (artboard) {
                         navBar.rive.status = RiveUtils.getRiveInput(artboard,

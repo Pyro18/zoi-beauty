@@ -56,11 +56,11 @@ List<Menu> sidebarMenus2 = [
 
 List<Menu> bottomNavItems = [
   Menu(
-    title: "Chat",
+    title: "Home",
     rive: RiveModel(
         src: "assets/RiveAssets/icons.riv",
-        artboard: "CHAT",
-        stateMachineName: "CHAT_Interactivity"),
+        artboard: "HOME",
+        stateMachineName: "HOME_interactivity"),
   ),
   Menu(
     title: "Search",

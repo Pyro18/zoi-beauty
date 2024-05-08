@@ -1,9 +1,18 @@
+import 'package:client/notifier/BookingNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:client/view/splash_screen/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => BookingNotifier(),
+      child: const MyApp(),
+    ),
+  );
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

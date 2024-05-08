@@ -35,6 +35,7 @@ class Api {
         await http.get(Uri.parse(baseUrl + 'user/users.php?user_id=$userId'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
+        print('User data: $data');
       if (data['status'] == 'success') {
         return data;
       } else {
@@ -104,4 +105,44 @@ class Api {
       throw Exception('Failed to book service');
     }
   }
+
+  Future<List<Map<String, dynamic>>> getServices() async {
+    final response = await http.get(Uri.parse(baseUrl + 'service/services.php'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      if (data['status'] == 'success') {
+        List<Map<String, dynamic>> servicesList = List<Map<String, dynamic>>.from(data['data']['services']);
+        return servicesList;
+      } else {
+        throw Exception('Failed to fetch services');
+      }
+    } else {
+      throw Exception('Failed to fetch services');
+    }
+  }
+
+  Future<bool> updateBooking(int bookingId, String date, String time) async {
+    final response = await http.put(
+      Uri.parse(baseUrl + 'service/booking.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'booking_id': bookingId.toString(),
+        'data_ora': '$date $time',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      if (data['status'] == 'success') {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      throw Exception('Failed to update booking');
+    }
+  }
+
 }
