@@ -40,45 +40,53 @@
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
     >
 
+    <style>
+        .custom-container{
+            max-width: 90%;
+            margin: auto;
+        }
+
+        .custom-container div{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
 </head>
 <body>
 
-<div class="container">
+<div class="custom-container">
     <footer class="py-5">
         <div class="row">
             <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
+                <h5>Sezione</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Noi</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Servizi</a></li>
                     <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+
                 </ul>
             </div>
 
             <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
+                <h5>GDPR</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Privacy Policy</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Terms of Service</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Cookie Policy</a></li>
                 </ul>
             </div>
 
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
+            <div class="col">
+                <h5>Orari</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Lunedì - Venerdì: 9:00 - 19:00</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Sabato: 10:00 - 18:00</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Domenica: Chiuso</a></li>
                 </ul>
             </div>
-
+            
             <div class="col-md-5 offset-md-1 mb-3">
                 <form>
                     <h5>Subscribe to our newsletter</h5>
@@ -93,7 +101,7 @@
         </div>
 
         <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-            <p>&copy; 2024 Company, Inc. All rights reserved.</p>
+            <p>&copy; 2024 [ ZOI ], Inc. All rights reserved.</p>
             <ul class="list-unstyled d-flex">
                 <li class="ms-3"><a class="link-body-emphasis" href="#"><i class="fa-brands fa-x-twitter fa-xl"></i></a></li>
                 <li class="ms-3"><a class="link-body-emphasis" href="#"><i class="fa-brands fa-instagram fa-xl"></i></a></li>

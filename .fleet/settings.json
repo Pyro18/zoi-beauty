@@ -1,0 +1,5 @@
+{
+    "editor.guides": [],
+    "lsp.clangd.compilation.databases": [],
+    "files.exclude": [".DS_Store", ".git"]
+}

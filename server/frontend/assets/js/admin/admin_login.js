@@ -12,7 +12,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
     console.log('passwordInput:', passwordInput.value);
 
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/admin_login.php', true);
+    xhr.open('POST', 'https://api.zoi-beauty.it/api/v1/auth/admin_login.php', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
         if (this.status == 200 && this.responseText) {

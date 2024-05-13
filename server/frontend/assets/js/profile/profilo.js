@@ -16,7 +16,7 @@ function userInfo() {
     console.log(user_id);
     if (user_id != "") {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`, true);
+        xhr.open('GET', `https://api.zoi-beauty.it/api/v1/user/users.php?user_id=${user_id}`, true);
         xhr.onload = function() {
             if (this.status == 200) {
                 let response = JSON.parse(this.responseText);
@@ -42,7 +42,7 @@ function userInfo() {
 function getUserActiveBookings(user_id) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', `http://localhost:8080/backend/api/v1/service/booking.php?user_id=${user_id}`, true);
+        xhr.open('GET', `https://api.zoi-beauty.it/api/v1/service/booking.php?user_id=${user_id}`, true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 try {

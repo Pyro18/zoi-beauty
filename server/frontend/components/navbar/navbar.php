@@ -36,7 +36,7 @@
                     <li><a href="/" class="link link-theme link-arrow">HOME</a></li>
                     <li><a href="#about" class="link link-theme link-arrow">NOI</a></li>
                     <li><a href="#booknow" class="link link-theme link-arrow">SERVIZI</a></li>
-                    <li><a href="#four" class="link link-theme link-arrow">CONTATTI</a></li>
+                    <!-- <li><a href="#four" class="link link-theme link-arrow">CONTATTI</a></li> -->
                 </ul>
 
                 <!-- Informazioni sull'utente -->

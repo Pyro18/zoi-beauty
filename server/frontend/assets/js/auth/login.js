@@ -19,7 +19,7 @@ function handleLoginFormSubmit(event) {
         let errorDiv = document.getElementById('error-login');
         // Effettuare la richiesta XMLHttpRequest
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/login.php', true);
+        xhr.open('POST', 'https://api.zoi-beauty.it/api/v1/auth/login.php', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {

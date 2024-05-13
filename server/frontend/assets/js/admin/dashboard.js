@@ -2,7 +2,7 @@
 function getUserDetails(user_id) {
 	return new Promise(function(resolve, reject) {
 		let xhr = new XMLHttpRequest();
-		xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
+		xhr.open('GET', `https://api.zoi-beauty.it/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				let data = JSON.parse(xhr.responseText);
@@ -27,7 +27,7 @@ function getServiceDetails(service_id) {
 		let xhr = new XMLHttpRequest();
 		xhr.open(
 			'GET',
-			`http://localhost:8080/backend/api/v1/service/services.php?service_id=${service_id}`,
+			`https://api.zoi-beauty.it/api/v1/service/services.php?service_id=${service_id}`,
 			true
 		);
 		xhr.onload = function() {
@@ -54,7 +54,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
 
         if (userId) {
             // Se l'utente è registrato, utilizza l'endpoint delle prenotazioni degli utenti registrati
-            url = `http://localhost:8080/backend/api/v1/service/booking.php`;
+            url = `https://api.zoi-beauty.it/api/v1/service/booking.php`;
             data = {
                 'utente_id': userId,
                 'servizio_id': serviceId,
@@ -62,7 +62,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
             };
         } else {
             // Se l'utente non è registrato, utilizza l'endpoint delle prenotazioni degli utenti non registrati
-            url = `http://localhost:8080/backend/api/v1/service/booking_guest_user.php`;
+            url = `https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php`;
             data = {
                 'nome': userName,
                 'cognome': userSurname,
@@ -95,7 +95,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
 
 function populateServiceSelect() {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/services.php', true);
+    xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/services.php', true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", populateServiceSelect);
 function getBookings() {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
+        xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/booking.php', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 try {
@@ -155,7 +155,7 @@ function getBookings() {
 function getGuestBookings() {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/booking_guest_user.php', true);
+        xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 try {
@@ -186,7 +186,7 @@ function deleteBooking(bookingId, isGuest) {
     console.log('isGuest:', isGuest);
 
     let xhr = new XMLHttpRequest();
-    let url = isGuest ? `http://localhost:8080/backend/api/v1/service/booking_guest_user.php?bookingId=${bookingId}` : `http://localhost:8080/backend/api/v1/service/booking.php?booking_id=${bookingId}`;
+    let url = isGuest ? `https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php?bookingId=${bookingId}` : `https://api.zoi-beauty.it/api/v1/service/booking.php?booking_id=${bookingId}`;
     xhr.open('DELETE', url, true);
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -211,7 +211,7 @@ function updateBooking(bookingId, dateTime, isGuest) {
     console.log('dateTime:', dateTime);
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        let url = isGuest ? 'http://localhost:8080/backend/api/v1/service/booking_guest_user.php' : 'http://localhost:8080/backend/api/v1/service/booking.php';
+        let url = isGuest ? 'https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php' : 'https://api.zoi-beauty.it/api/v1/service/booking.php';
         xhr.open('PUT', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
@@ -376,7 +376,7 @@ function showAddModal() {
 			let q = $(this).val();
 	
 			$.ajax({
-					url: 'http://localhost:8080/backend/api/v1/user/users.php',
+					url: 'https://api.zoi-beauty.it/api/v1/user/users.php',
 					type: 'GET',
 					data: {
 							q: q
@@ -463,7 +463,7 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
 
 function logout() {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/admin_logout.php', true);
+    xhr.open('POST', 'https://api.zoi-beauty.it/api/v1/auth/admin_logout.php', true);
     xhr.onload = function() {
         if (this.status == 200 && this.responseText) {
             try {
@@ -496,7 +496,7 @@ function displayUsers() {
     document.getElementById('calendar').style.display = 'none';
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8080/backend/api/v1/user/users.php', true);
+    xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/user/users.php', true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);

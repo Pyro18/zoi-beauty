@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     const fetchServicesByType = (typeId) => {
         const xhr = new XMLHttpRequest();
-        const url = `http://localhost:8080/backend/api/v1/service/services.php?type_id=${typeId}`;
+        const url = `https://api.zoi-beauty.it/api/v1/service/services.php?type_id=${typeId}`;
 
         xhr.open('GET', url, true);
 
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
      **/
     const fetchData = () => {
         const xhr = new XMLHttpRequest();
-        const url = `http://localhost:8080/backend/api/v1/service/services.php`;
+        const url = `https://api.zoi-beauty.it/api/v1/service/services.php`;
         xhr.open('GET', url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Invia una richiesta al server
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8080/backend/api/v1/service/booking.php', true);
+    xhr.open('POST', 'https://api.zoi-beauty.it/api/v1/service/booking.php', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
         console.log(xhr.responseText); // Add this line
