@@ -25,14 +25,12 @@ function getBooking($bookingId)
     return $booking;
 }
 
-function getAllBookings($userId)
+function getAllBookings()
 {
     global $db;
-    // Ottieni le prenotazioni per un utente specifico
     $query = $db->prepare(
-        "SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id WHERE prenotazioni.utente_id = :user_id"
+        "SELECT prenotazioni.*, services.name AS servizio_nome FROM prenotazioni JOIN services ON prenotazioni.servizio_id = services.id"
     );
-    $query->bindParam(":user_id", $userId, PDO::PARAM_INT);
     $query->execute();
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
     return $result;

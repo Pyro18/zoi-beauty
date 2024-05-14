@@ -1,48 +1,48 @@
 // Funzione per ottenere i dettagli dell'utente
 function getUserDetails(user_id) {
-	return new Promise(function(resolve, reject) {
-		let xhr = new XMLHttpRequest();
-		xhr.open('GET', `https://api.zoi-beauty.it/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
-		xhr.onload = function() {
-			if (xhr.status === 200) {
-				let data = JSON.parse(xhr.responseText);
-				if (data.status === 'success') {
-					resolve(data.data);
-				} else {
-					console.error('Error fetching user details:', data.message);
-					reject(data.message);
-				}
-			} else {
-				console.error('Error:', xhr.status, xhr.statusText);
-				reject(xhr.statusText);
-			}
-		};
-		xhr.send();
-	});
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`, true); // Include user_id in the request
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.status === 'success') {
+                    resolve(data.data);
+                } else {
+                    console.error('Error fetching user details:', data.message);
+                    reject(data.message);
+                }
+            } else {
+                console.error('Error:', xhr.status, xhr.statusText);
+                reject(xhr.statusText);
+            }
+        };
+        xhr.send();
+    });
 }
 
 // Funzione per ottenere i dettagli del servizio
 function getServiceDetails(service_id) {
-	return new Promise(function(resolve, reject) {
-		let xhr = new XMLHttpRequest();
-		xhr.open(
-			'GET',
-			`https://api.zoi-beauty.it/api/v1/service/services.php?service_id=${service_id}`,
-			true
-		);
-		xhr.onload = function() {
-			if (this.status === 200) {
-				let serviceDetails = JSON.parse(this.responseText);
-				resolve(serviceDetails.data);
-			} else {
-				reject(new Error(`Errore: ${this.status} ${this.statusText}`));
-			}
-		};
-		xhr.onerror = function() {
-			reject(new Error('Errore di rete'));
-		};
-		xhr.send();
-	});
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(
+            'GET',
+            `http://localhost:8080/backend/api/v1/service/services.php?service_id=${service_id}`,
+            true
+        );
+        xhr.onload = function () {
+            if (this.status === 200) {
+                let serviceDetails = JSON.parse(this.responseText);
+                resolve(serviceDetails.data);
+            } else {
+                reject(new Error(`Errore: ${this.status} ${this.statusText}`));
+            }
+        };
+        xhr.onerror = function () {
+            reject(new Error('Errore di rete'));
+        };
+        xhr.send();
+    });
 }
 
 // Funzione per aggiungere una prenotazione
@@ -54,7 +54,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
 
         if (userId) {
             // Se l'utente è registrato, utilizza l'endpoint delle prenotazioni degli utenti registrati
-            url = `https://api.zoi-beauty.it/api/v1/service/booking.php`;
+            url = `http://localhost:8080/backend/api/v1/service/booking.php`;
             data = {
                 'utente_id': userId,
                 'servizio_id': serviceId,
@@ -62,7 +62,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
             };
         } else {
             // Se l'utente non è registrato, utilizza l'endpoint delle prenotazioni degli utenti non registrati
-            url = `https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php`;
+            url = `http://localhost:8080/backend/api/v1/service/booking_guest_user.php`;
             data = {
                 'nome': userName,
                 'cognome': userSurname,
@@ -75,7 +75,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
 
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (this.status === 200) {
                 let response = JSON.parse(xhr.responseText);
                 resolve(response);
@@ -83,7 +83,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
                 reject(new Error(`Errore: ${this.status} ${this.statusText}`));
             }
         };
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             reject(new Error('Errore di rete'));
         };
         xhr.send(JSON.stringify(data));
@@ -91,12 +91,10 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
 }
 
 
-
-
 function populateServiceSelect() {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/services.php', true);
-    xhr.onload = function() {
+    xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/services.php', true);
+    xhr.onload = function () {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
             if (response.status === 'success') {
@@ -123,11 +121,11 @@ function populateServiceSelect() {
 document.addEventListener("DOMContentLoaded", populateServiceSelect);
 
 // Funzione per ottenere tutte le prenotazioni
-function getBookings() {
+function getBookings(userId) {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/booking.php', true);
-        xhr.onload = function() {
+        xhr.open('GET', `http://localhost:8080/backend/api/v1/service/booking.php?user_id=${userId}`, true);
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 try {
                     let data = JSON.parse(xhr.responseText);
@@ -155,8 +153,8 @@ function getBookings() {
 function getGuestBookings() {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php', true);
-        xhr.onload = function() {
+        xhr.open('GET', 'http://localhost:8080/backend/api/v1/service/booking_guest_user.php', true);
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 try {
                     let data = JSON.parse(xhr.responseText);
@@ -186,9 +184,9 @@ function deleteBooking(bookingId, isGuest) {
     console.log('isGuest:', isGuest);
 
     let xhr = new XMLHttpRequest();
-    let url = isGuest ? `https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php?bookingId=${bookingId}` : `https://api.zoi-beauty.it/api/v1/service/booking.php?booking_id=${bookingId}`;
+    let url = isGuest ? `http://localhost:8080/backend/api/v1/service/booking_guest_user.php?bookingId=${bookingId}` : `http://localhost:8080/backend/api/v1/service/booking.php?booking_id=${bookingId}`;
     xhr.open('DELETE', url, true);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             let data = JSON.parse(xhr.responseText);
             if (data.status === 'success') {
@@ -211,10 +209,10 @@ function updateBooking(bookingId, dateTime, isGuest) {
     console.log('dateTime:', dateTime);
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        let url = isGuest ? 'https://api.zoi-beauty.it/api/v1/service/booking_guest_user.php' : 'https://api.zoi-beauty.it/api/v1/service/booking.php';
+        let url = isGuest ? 'http://localhost:8080/backend/api/v1/service/booking_guest_user.php' : 'http://localhost:8080/backend/api/v1/service/booking.php';
         xhr.open('PUT', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 let data = JSON.parse(xhr.responseText);
                 if (data.status === 'success') {
@@ -240,20 +238,20 @@ function updateBooking(bookingId, dateTime, isGuest) {
 
 // Funzione per mostrare il modale di modifica
 function showUpdateModal(bookingId, dateTime) {
-	// Mostra il modale
-	let modal = new bootstrap.Modal(document.getElementById('updateModal'));
-	modal.show();
-	// Imposta i valori predefiniti nel modale
-	document.getElementById('updateDateTime').value = dateTime;
-	// Aggiungi un listener per l'evento di submit del form
-	document.getElementById('updateForm').addEventListener('submit', function(event) {
-		event.preventDefault();
-		updateBooking(
-			bookingId,
-			document.getElementById('updateDateTime').value
-		);
-		modal.hide();
-	});
+    // Mostra il modale
+    let modal = new bootstrap.Modal(document.getElementById('updateModal'));
+    modal.show();
+    // Imposta i valori predefiniti nel modale
+    document.getElementById('updateDateTime').value = dateTime;
+    // Aggiungi un listener per l'evento di submit del form
+    document.getElementById('updateForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        updateBooking(
+            bookingId,
+            document.getElementById('updateDateTime').value
+        );
+        modal.hide();
+    });
 }
 
 // !!!!!!! TODO - guardare inserimento !!!!!!!!!
@@ -331,14 +329,14 @@ async function displayBookings(bookings) {
         locale: 'it',
         events: events,
         editable: true, // Abilita il trascinamento degli eventi
-        eventClick: function(info) {
+        eventClick: function (info) {
             let modal = new bootstrap.Modal(document.getElementById(info.event.id));
             modal.show();
         },
         // TODO - Aggiungi un listener per l'evento drop, al drop mandare la richiesta al server per aggiornare la prenotazione
         // https://fullcalendar.io/docs/eventDrop
         // (per ora non funziona)
-        eventDrop: function(info) {
+        eventDrop: function (info) {
             let newDate = info.event.start.toISOString();
             let bookingId = parseInt(info.event.id.replace('event-', '')); // Rimuove 'event-' dall'ID
 
@@ -361,8 +359,8 @@ displayAllBookings();
 
 
 function hideModal(modalId) {
-	let modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-	modal.hide();
+    let modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+    modal.hide();
 }
 
 // Funzione per mostrare il modale di aggiunta
@@ -372,41 +370,41 @@ function showAddModal() {
     modal.show();
 
     // Aggiungi un listener per l'evento di input sulla barra di ricerca
-    document.getElementById('searchUser').addEventListener('input', function() {
-			let q = $(this).val();
-	
-			$.ajax({
-					url: 'https://api.zoi-beauty.it/api/v1/user/users.php',
-					type: 'GET',
-					data: {
-							q: q
-					},
-					dataType: 'json',
-					success: function(data) {
-							if (data.status === 'success') {
-									let datalist = document.getElementById('userList');
-									datalist.innerHTML = '';
-									data.data.forEach(user => {
-											let option = document.createElement('option');
-											option.value = user.nome + ' ' + user.cognome;
-											option.setAttribute('data-nome', user.nome);
-											option.setAttribute('data-cognome', user.cognome);
-											option.setAttribute('data-telefono', user.telefono);
-											option.setAttribute('data-email', user.email);
-                                            option.setAttribute('data-id', user.id);
-											datalist.appendChild(option);
-									});
-							} else {
-									$('#searchUser').val('');
-							}
-					},
-					error: function() {
-							console.error('Error fetching user details');
-					}
-			});
-	});
+    document.getElementById('searchUser').addEventListener('input', function () {
+        let q = $(this).val();
 
-    document.getElementById('searchUser').addEventListener('input', function() {
+        $.ajax({
+            url: 'http://localhost:8080/backend/api/v1/user/users.php',
+            type: 'GET',
+            data: {
+                q: q
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status === 'success') {
+                    let datalist = document.getElementById('userList');
+                    datalist.innerHTML = '';
+                    data.data.forEach(user => {
+                        let option = document.createElement('option');
+                        option.value = user.nome + ' ' + user.cognome;
+                        option.setAttribute('data-nome', user.nome);
+                        option.setAttribute('data-cognome', user.cognome);
+                        option.setAttribute('data-telefono', user.telefono);
+                        option.setAttribute('data-email', user.email);
+                        option.setAttribute('data-id', user.id);
+                        datalist.appendChild(option);
+                    });
+                } else {
+                    $('#searchUser').val('');
+                }
+            },
+            error: function () {
+                console.error('Error fetching user details');
+            }
+        });
+    });
+
+    document.getElementById('searchUser').addEventListener('input', function () {
         let inputVal = this.value;
         let options = document.querySelectorAll('#userList option');
 
@@ -420,7 +418,7 @@ function showAddModal() {
             }
         });
     });
-	
+
 }
 
 // Aggiungi un listener per il click del pulsante di aggiunta
@@ -428,13 +426,13 @@ document.getElementById('addBookingButton').addEventListener('click', showAddMod
 
 
 // Chiamata alla funzione getBookings quando la pagina viene caricata
-window.onload = function() {
+window.onload = function () {
     getBookings(); // true per includere le prenotazioni dei non utenti
     getGuestBookings(); // true per includere le prenotazioni dei non utenti
 };
 
 // Aggiungi un listener per l'evento di invio del form di aggiunta prenotazione
-document.getElementById('addForm').addEventListener('submit', function(event) {
+document.getElementById('addForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
     let userId = document.getElementById('userId').value;
@@ -446,13 +444,13 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
     let userEmail = document.getElementById('userEmail').value;
 
     addBooking(userId, serviceId, dateTime, userName, userSurname, userPhone, userEmail)
-        .then(function(response) {
+        .then(function (response) {
             console.log(response);
             // Aggiorna il calendario o mostra un messaggio di successo
             getBookings();
             getGuestBookings();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.error(error);
             // Mostra un messaggio di errore
 
@@ -460,11 +458,10 @@ document.getElementById('addForm').addEventListener('submit', function(event) {
 });
 
 
-
 function logout() {
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.zoi-beauty.it/api/v1/auth/admin_logout.php', true);
-    xhr.onload = function() {
+    xhr.open('POST', 'http://localhost:8080/backend/api/v1/auth/admin_logout.php', true);
+    xhr.onload = function () {
         if (this.status == 200 && this.responseText) {
             try {
                 let response = JSON.parse(this.responseText);
@@ -484,11 +481,9 @@ function logout() {
 }
 
 document.getElementById('logoutButton').addEventListener('click', function () {
-    
+
     logout();
 });
-
-
 
 
 function displayUsers() {
@@ -496,8 +491,8 @@ function displayUsers() {
     document.getElementById('calendar').style.display = 'none';
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.zoi-beauty.it/api/v1/user/users.php', true);
-    xhr.onload = function() {
+    xhr.open('GET', 'http://localhost:8080/backend/api/v1/user/users.php', true);
+    xhr.onload = function () {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
             let users = response.data || response.users;

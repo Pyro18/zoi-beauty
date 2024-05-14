@@ -16,7 +16,7 @@ function getCookie(cname) {
 
 function logout() {
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', `https://api.zoi-beauty.it/api/v1/auth/logout.php`, true);
+    xhr.open('GET', `http://localhost:8080/backend/api/v1/auth/logout.php`, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -45,7 +45,7 @@ window.onload = function() {
         if (user_id != "") {
             // l'utente è loggato, quindi carico i suoi dati
             let xhr = new XMLHttpRequest();
-            xhr.open('GET', `https://api.zoi-beauty.it/api/v1/user/users.php?user_id=${user_id}`);
+            xhr.open('GET', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${user_id}`);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     let data = JSON.parse(xhr.responseText);
