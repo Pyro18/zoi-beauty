@@ -46,3 +46,32 @@
 .navbar .form-control {
     padding: .75rem 1rem;
 }
+
+#userTable {
+    display: none;
+    margin-top: 20px;
+}
+
+#userTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#userTable th, #userTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#userTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#userTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#userTable tr:hover {
+    background-color: #ddd;
+}

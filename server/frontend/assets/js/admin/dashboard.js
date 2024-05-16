@@ -481,40 +481,124 @@ function logout() {
 }
 
 document.getElementById('logoutButton').addEventListener('click', function () {
-
     logout();
 });
 
 
+function deleteUser(userId) {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `http://localhost:8080/backend/api/v1/user/users.php?user_id=${userId}`, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.status === 'success') {
+                    resolve(data);
+                } else {
+                    reject(new Error(data.message));
+                }
+            } else {
+                reject(new Error(`Errore: ${xhr.status} ${xhr.statusText}`));
+            }
+        };
+        xhr.send();
+    });
+}
+
+function displayUsers() {
+    // ...
+    // Itera attraverso l'array di utenti e crea una riga per ogni utente
+    for (let user of users) {
+        table += `<tr><td>${user.id}</td><td>${user.nome}</td><td>${user.cognome}</td><td>${user.telefono}</td><td>${user.email}</td><td><button class="delete-user" data-user-id="${user.id}"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+    }
+    // ...
+    // Aggiungi un listener per l'evento di click del pulsante di eliminazione dell'utente
+    document.querySelectorAll('.delete-user').forEach(button => {
+        button.addEventListener('click', function () {
+            let userId = this.getAttribute('data-user-id');
+            deleteUser(userId)
+                .then(() => {
+                    // Ricarica la tabella degli utenti dopo l'eliminazione
+                    displayUsers();
+                })
+                .catch(error => {
+                    console.error('Failed to delete user:', error);
+                });
+        });
+    });
+}
+
+
+/**
+ * Funzione per visualizzare l'elenco degli utenti in una tabella HTML
+ * Nasconde il calendario e invia una richiesta GET al server per ottenere i dati degli utenti
+ * Quindi crea una tabella HTML dinamica con i dati degli utenti ottenuti dal server
+ */
 function displayUsers() {
     // Nascondi il calendario
     document.getElementById('calendar').style.display = 'none';
 
+    // Crea una nuova istanza di XMLHttpRequest
     let xhr = new XMLHttpRequest();
+
+    // Imposta la richiesta GET per ottenere i dati degli utenti dal server
     xhr.open('GET', 'http://localhost:8080/backend/api/v1/user/users.php', true);
+
+    // Gestisci la risposta del server quando la richiesta è completa
     xhr.onload = function () {
+        // Verifica se la richiesta è andata a buon fine (codice di stato 200)
         if (xhr.status === 200) {
+            // Analizza la risposta JSON del server
             let response = JSON.parse(xhr.responseText);
             let users = response.data || response.users;
+
+            // Verifica se l'array di utenti è presente nella risposta
             if (users) {
-                let table = '<table>';
-                table += '<tr><th>ID</th><th>Name</th><th>Cognome</th><th>Numero di telefono</th><th>Email</th></tr>';
+                // Crea la tabella HTML per visualizzare gli utenti
+                let table = '<table class="table table-striped table-bordered">';
+                table += '<thead class="thead-dark" style="color: #4CAF50"><tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Numero di telefono</th><th>Email</th><th>Azioni</th></tr></thead>';
+                table += '<tbody>';
+
+                // Itera attraverso l'array di utenti e crea una riga per ogni utente
                 for (let user of users) {
-                    table += `<tr><td>${user.id}</td><td>${user.nome}</td><td>${user.cognome}</td><td>${user.telefono}</td><td>${user.email}</td></tr>`;
+                    table += `<tr><td>${user.id}</td><td>${user.nome}</td><td>${user.cognome}</td><td>${user.telefono}</td><td>${user.email}</td><td><button class="delete-user" data-user-id="${user.id}"><i class="fa-solid fa-trash"></i></button></td></tr>`;
                 }
-                table += '</table>';
+
+                table += '</tbody></table>';
 
                 // Mostra la tabella degli utenti
                 let userTable = document.getElementById('userTable');
                 userTable.innerHTML = table;
                 userTable.style.display = 'block';
+
+                // Aggiungi un listener per l'evento di click del pulsante di eliminazione dell'utente
+                document.querySelectorAll('.delete-user').forEach(button => {
+                    button.addEventListener('click', function () {
+                        let userId = this.getAttribute('data-user-id');
+                        deleteUser(userId)
+                            .then(() => {
+                                // Ricarica la tabella degli utenti dopo l'eliminazione
+                                displayUsers();
+                            })
+                            .catch(error => {
+                                console.error('Failed to delete user:', error);
+                            });
+                    });
+                });
             } else {
-                console.error('Error: users array not found in response', response);
+                // Se non ci sono utenti, mostra un messaggio di errore
+                let userTable = document.getElementById('userTable');
+                userTable.innerHTML = '<p>Nessun utente trovato.</p>';
+                userTable.style.display = 'block';
             }
+        } else {
+            // Se la richiesta non è andata a buon fine, stampa un messaggio di errore
+            console.error('Failed to fetch users:', xhr.status, xhr.statusText);
         }
     };
-    xhr.send();
 
+    // Invia la richiesta al server
+    xhr.send();
 }
 
 function displayObjects() {

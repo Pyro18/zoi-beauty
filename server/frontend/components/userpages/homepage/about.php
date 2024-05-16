@@ -25,32 +25,32 @@
         <div class="col-md-6" style="padding-left: 0;padding-right: 0;">
             <div class="services">
                 <div class="service">
-                    <img class="icon" src="/frontend/assets/images/512x512.png" alt="Manicure & Pedicure">
-                    <h2 class="name">Manicure & Pedicure</h2>
+                    <img class="icon" src="/frontend/assets/images/sopracciglia.png" alt="Manicure & Pedicure">
+                    <h2 class="name">Sopracciglia</h2>
                     <p class="description">Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
                 </div>
 
                 <div class="service">
-                    <img class="icon" src="/frontend/assets/images/512x512.png" alt="Waxing">
-                    <h2 class="name">Waxing</h2>
+                    <img class="icon" src="/frontend/assets/images/labbra.png" alt="Waxing">
+                    <h2 class="name">Tatuaggi Labbra</h2>
                     <p class="description">Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
                 </div>
 
                 <div class="service">
-                    <img class="icon" src="/frontend/assets/images/512x512.png" alt="Make-up">
-                    <h2 class="name">Make-up</h2>
+                    <img class="icon" src="/frontend/assets/images/makeup.png" alt="Make-up">
+                    <h2 class="name">Trucco semipermanente</h2>
                     <p class="description">Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
                 </div>
 
                 <div class="service">
-                    <img class="icon" src="/frontend/assets/images/512x512.png" alt="Massage & Treatment">
-                    <h2 class="name">Massage & Treatment</h2>
+                    <img class="icon" src="/frontend/assets/images/ciglia.png" alt="Massage & Treatment">
+                    <h2 class="name">Laminazione Ciglia</h2>
                     <p class="description">Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-6" style="padding-left: 0;padding-right: 0;">
-            <img class="image" src="/frontend/assets/images/1280x800.png" alt="">
+            <img class="image" src="/frontend/assets/images/welcome1.jpg" alt="">
         </div>
     </div>
 </div>

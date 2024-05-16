@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const categoryElement = document.createElement('div');
             categoryElement.classList.add('Category');
             categoryElement.innerHTML = `
-                <img src="/frontend/assets/images/category${category.id}.svg" alt="${category.name}">
+                <img src="/frontend/assets/images/services/category${category.id}.png" alt="${category.name}">
                 <p>${category.name}</p>
             `;
             categoryElement.addEventListener('click', () => {
@@ -168,11 +168,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 serviceElement.innerHTML = `
             <div class="Line">
                 <p class="Name">${service.name}</p>
-                <p class="Price">now €${price.toFixed(2)}</p>
+                <p class="Price">ora €${price.toFixed(2)}</p>
             </div>
             <div class="Line">
                 <p class="Time">${Math.floor(service.duration / 60)} hrs ${service.duration % 60} mins</p>
-                <p class="Discount">save up to 20%</p>
+                <p class="Discount">risparmia fino al 20% </p>
             </div>
         `;
                 serviceElement.addEventListener('click', () => {
