@@ -32,19 +32,16 @@ function registerUser($nome, $cognome, $username, $telefono, $email, $password)
 
     $sql = "SELECT * FROM utenti WHERE email = :email";
     $query = $db->prepare($sql);
-    $query->bindParam(':email', $email_hash, PDO::PARAM_STR);
+    $query->bindParam(':email', $cleaned_email, PDO::PARAM_STR);
     $query->execute();
-    $row = $query->fetch(PDO::FETCH_ASSOC);
+    $row = $query->fetch(PDO::FETCH_ASSOC); 
 
-    if (!preg_match('/^\+?39?\s?\(?0?\d{1,9}\)?$/', $cleaned_telefono)) {
-        echo createResponse('error', 'Il numero di telefono non è valido. Inserisci un numero di telefono italiano valido.', []);
-        exit;
-    }
+    if (!$row) {
+        if (!preg_match('/^\+?39?\s?\(?0?\d{1,9}\)?$/', $cleaned_telefono)) {
+            echo createResponse('error', 'Il numero di telefono non è valido. Inserisci un numero di telefono italiano valido.', []);
+            exit;
+        }
 
-    if ($row['username'] == $cleaned_username || $row['email'] == $cleaned_email || $row['telefono'] == $cleaned_telefono) {
-        echo createResponse('error', 'User already exists.', []);
-        exit;
-    } else {
         $sql = "INSERT INTO utenti (nome, cognome, username, telefono, email, password) VALUES (:nome, :cognome, :username, :telefono, :email, :password)";
         $query = $db->prepare($sql);
         $query->bindParam(':nome', $cleaned_nome, PDO::PARAM_STR);
@@ -55,10 +52,19 @@ function registerUser($nome, $cognome, $username, $telefono, $email, $password)
         $query->bindParam(':password', $password_hash, PDO::PARAM_STR);
         $query->execute();
 
+        $userId = $db->lastInsertId();
+        session_start();
+        $_SESSION['user_id'] = $userId;
+
         echo createResponse('success', 'User registered successfully.',
             ['nome' => $cleaned_nome, 'cognome' => $cleaned_cognome, 'username' => $cleaned_username, 'email' => $cleaned_email, 'telefono' => $cleaned_telefono]);
+    } else {
+        
+        echo createResponse('error', 'User already exists.', []);
+        exit;
     }
 }
+
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

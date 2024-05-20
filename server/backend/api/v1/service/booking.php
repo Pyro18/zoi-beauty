@@ -125,8 +125,8 @@ switch ($requestMethod) {
         $dateTime = $requestData["data_ora"];
 
         // SOLO PER L'INSERIMENTO DA MOBILE
-        $dateTime = $_POST['dateTime'];
-        $dateTime = date("Y-m-d H:i:s", strtotime($dateTime));
+        //$dateTime = $_POST['dateTime'];
+        //$dateTime = date("Y-m-d H:i:s", strtotime($dateTime));
 
         if (createBooking($serviceId, $userId, $dateTime)) {
             echo createResponse("success", "Booking created successfully.");

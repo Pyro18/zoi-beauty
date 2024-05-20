@@ -78,6 +78,7 @@ function addBooking(userId, serviceId, dateTime, userName, userSurname, userPhon
         xhr.onload = function () {
             if (this.status === 200) {
                 let response = JSON.parse(xhr.responseText);
+                console.log(response);
                 resolve(response);
             } else {
                 reject(new Error(`Errore: ${this.status} ${this.statusText}`));

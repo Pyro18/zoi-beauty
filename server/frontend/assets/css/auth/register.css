@@ -1,0 +1,30 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  border-radius: 1rem;
+  height: 100%;
+}
+.image-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+.image-container img {
+  border-radius: 1rem 0 0 1rem;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+.step {
+  display: none;
+}
+.step.active {
+  display: block;
+}

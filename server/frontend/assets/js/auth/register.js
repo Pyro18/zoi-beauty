@@ -1,6 +1,7 @@
 window.onload = function() {
     const form = document.getElementById('registerForm');
-    const messageDiv = document.getElementById('message');
+    const messageModal = new bootstrap.Modal(document.getElementById('messageModal'), {});
+    const modalMessageBody = document.getElementById('modalMessageBody');
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -14,7 +15,8 @@ window.onload = function() {
         const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
 
         if (password !== confirmPassword) {
-            messageDiv.innerHTML = `<div class="container alert alert-danger" role="alert">Le password non corrispondono</div>`;
+            modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Le password non corrispondono</div>`;
+            messageModal.show();
             return;
         }
 
@@ -24,15 +26,30 @@ window.onload = function() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    const data = JSON.parse(xhr.responseText);
-                    if (data.status === 'success') {
-                        messageDiv.innerHTML = `<div class="container alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
-                        window.location.href = '/';
-                    } else {
-                        messageDiv.innerHTML = `<div class="container alert alert-danger" role="alert">Registrazione fallita: ${data.message}</div>`;
+                    console.log(xhr.responseText);
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        
+                        if (data.status === 'success') {
+                            modalMessageBody.innerHTML = `<div class="alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
+                            messageModal.show();
+                            setTimeout(() => {
+                                sessionStorage.setItem('user_id', data.data.user_id);
+                                window.location.href = '/login';
+                            }, 2000);
+                        } else {
+                            modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Registrazione fallita: ${data.message}</div>`;
+                            messageModal.show();
+                        }
+                    } catch (error) {
+                        console.error('Error parsing JSON response:', error);
+                        modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Errore nel parsing della risposta dal server</div>`;
+                        messageModal.show();
                     }
                 } else {
-                    messageDiv.innerHTML = `<div class="container alert alert-danger" role="alert">Registrazione fallita. Si prega di riprovare più tardi.</div>`;
+                    console.error('Error:', xhr.status, xhr.statusText);
+                    modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Errore ${xhr.status}: ${xhr.statusText}</div>`;
+                    messageModal.show();
                 }
             }
         };
