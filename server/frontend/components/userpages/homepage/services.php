@@ -37,17 +37,24 @@
             rel="stylesheet"
             href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
     >
+
+    <style>
+                .servizi {
+                        background-color: #f6f6f6;
+                }
+        </style>
 </head>
 <body>
 
 
-
+<div class="servizi">
+<br>
 <div class="container" id="booknow">
     <div class="row">
         <div class="col">
             <section class="section">
-                <div class="meta">What we do</div>
-                <h2 class="name">[ SERVICES ]</h2>
+                <div class="meta">Cosa Facciamo</div>
+                <h2 class="name">[ SERVIZI ]</h2>
                 <p class="description">Vestibulum ut mauris euismod, tristique augue sed, consequat metus. Duis fermentum massa ac metus suscipit tincidunt. Praesent felis felis, pretium sit amet vehicula at, posuere at mauris.</p>
             </section>
         </div>
@@ -62,7 +69,7 @@
   </div>
   <div class="Services service-container">
   </div>
-  <a class="Book">Book now</a>
+  <a class="Book">Prenota ora</a>
 </div>
 
 
@@ -93,6 +100,8 @@
       </div>
     </div>
   </div>
+</div>
+<br>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>

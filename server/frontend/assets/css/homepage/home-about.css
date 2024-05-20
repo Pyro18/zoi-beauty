@@ -1,3 +1,6 @@
+body {
+    background-color: #f6f6f6;
+}
 .container, .row, .col {
     width: 100%;
     padding: 0;

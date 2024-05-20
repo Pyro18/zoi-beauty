@@ -39,10 +39,14 @@
         rel="stylesheet"
         href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css"
     >
-
+    <style>
+        .footer {
+            background-color: white;
+        }   
+    </style>
 </head>
 <body>
-
+<div class="footer">
 <div class="container">
     <footer class="py-5" >
         <div class="row">
@@ -85,6 +89,7 @@
             </ul>
         </div>
     </footer>
+</div>
 </div>
 </body>
 </html>
