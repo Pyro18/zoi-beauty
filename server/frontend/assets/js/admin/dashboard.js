@@ -118,7 +118,7 @@ function populateServiceSelect() {
     xhr.send();
 }
 
-// Chiamare la funzione quando il documento è pronto
+// Chiama la funzione quando il documento è pronto
 document.addEventListener("DOMContentLoaded", populateServiceSelect);
 
 // Funzione per ottenere tutte le prenotazioni
@@ -244,7 +244,7 @@ function showUpdateModal(bookingId, dateTime) {
     modal.show();
     // Imposta i valori predefiniti nel modale
     document.getElementById('updateDateTime').value = dateTime;
-    // Aggiungi un listener per l'evento di submit del form
+    // Aggiunge un listener per l'evento di submit del form
     document.getElementById('updateForm').addEventListener('submit', function (event) {
         event.preventDefault();
         updateBooking(
@@ -336,7 +336,6 @@ async function displayBookings(bookings) {
         },
         // TODO - Aggiungi un listener per l'evento drop, al drop mandare la richiesta al server per aggiornare la prenotazione
         // https://fullcalendar.io/docs/eventDrop
-        // (per ora non funziona)
         eventDrop: function (info) {
             let newDate = info.event.start.toISOString();
             let bookingId = parseInt(info.event.id.replace('event-', '')); // Rimuove 'event-' dall'ID
@@ -355,7 +354,7 @@ async function displayAllBookings() {
     await displayBookings(allBookings);
 }
 
-// Chiamare la funzione quando il documento è pronto
+// Chiama la funzione quando il documento è pronto
 displayAllBookings();
 
 
@@ -370,7 +369,7 @@ function showAddModal() {
     let modal = new bootstrap.Modal(document.getElementById('addModal'));
     modal.show();
 
-    // Aggiungi un listener per l'evento di input sulla barra di ricerca
+    // Aggiunge un listener per l'evento di input sulla barra di ricerca
     document.getElementById('searchUser').addEventListener('input', function () {
         let q = $(this).val();
 
@@ -422,17 +421,17 @@ function showAddModal() {
 
 }
 
-// Aggiungi un listener per il click del pulsante di aggiunta
+// Aggiunge un listener per il click del pulsante di aggiunta
 document.getElementById('addBookingButton').addEventListener('click', showAddModal);
 
 
 // Chiamata alla funzione getBookings quando la pagina viene caricata
 window.onload = function () {
-    getBookings(); // true per includere le prenotazioni dei non utenti
-    getGuestBookings(); // true per includere le prenotazioni dei non utenti
+    getBookings(); // per includere le prenotazioni dei non utenti
+    getGuestBookings(); // per includere le prenotazioni dei non utenti
 };
 
-// Aggiungi un listener per l'evento di invio del form di aggiunta prenotazione
+// Aggiunge un listener per l'evento di invio del form di aggiunta prenotazione
 document.getElementById('addForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -447,7 +446,7 @@ document.getElementById('addForm').addEventListener('submit', function (event) {
     addBooking(userId, serviceId, dateTime, userName, userSurname, userPhone, userEmail)
         .then(function (response) {
             console.log(response);
-            // Aggiorna il calendario o mostra un messaggio di successo
+            // Aggiorna il calendario
             getBookings();
             getGuestBookings();
         })
@@ -507,13 +506,10 @@ function deleteUser(userId) {
 }
 
 function displayUsers() {
-    // ...
-    // Itera attraverso l'array di utenti e crea una riga per ogni utente
     for (let user of users) {
         table += `<tr><td>${user.id}</td><td>${user.nome}</td><td>${user.cognome}</td><td>${user.telefono}</td><td>${user.email}</td><td><button class="delete-user" data-user-id="${user.id}"><i class="fa-solid fa-trash"></i></button></td></tr>`;
     }
-    // ...
-    // Aggiungi un listener per l'evento di click del pulsante di eliminazione dell'utente
+    // Aggiunge un listener per l'evento di click del pulsante di eliminazione dell'utente
     document.querySelectorAll('.delete-user').forEach(button => {
         button.addEventListener('click', function () {
             let userId = this.getAttribute('data-user-id');
@@ -536,31 +532,24 @@ function displayUsers() {
  * Quindi crea una tabella HTML dinamica con i dati degli utenti ottenuti dal server
  */
 function displayUsers() {
-    // Nascondi il calendario
+    // Nasconde il calendario
     document.getElementById('calendar').style.display = 'none';
 
-    // Crea una nuova istanza di XMLHttpRequest
     let xhr = new XMLHttpRequest();
 
-    // Imposta la richiesta GET per ottenere i dati degli utenti dal server
     xhr.open('GET', 'http://localhost:8080/backend/api/v1/user/users.php', true);
 
-    // Gestisci la risposta del server quando la richiesta è completa
     xhr.onload = function () {
-        // Verifica se la richiesta è andata a buon fine (codice di stato 200)
         if (xhr.status === 200) {
-            // Analizza la risposta JSON del server
             let response = JSON.parse(xhr.responseText);
             let users = response.data || response.users;
 
-            // Verifica se l'array di utenti è presente nella risposta
             if (users) {
                 // Crea la tabella HTML per visualizzare gli utenti
                 let table = '<table class="table table-striped table-bordered">';
                 table += '<thead class="thead-dark" style="color: #4CAF50"><tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Numero di telefono</th><th>Email</th><th>Azioni</th></tr></thead>';
                 table += '<tbody>';
 
-                // Itera attraverso l'array di utenti e crea una riga per ogni utente
                 for (let user of users) {
                     table += `<tr><td>${user.id}</td><td>${user.nome}</td><td>${user.cognome}</td><td>${user.telefono}</td><td>${user.email}</td><td><button class="delete-user" data-user-id="${user.id}"><i class="fa-solid fa-trash"></i></button></td></tr>`;
                 }
@@ -572,7 +561,6 @@ function displayUsers() {
                 userTable.innerHTML = table;
                 userTable.style.display = 'block';
 
-                // Aggiungi un listener per l'evento di click del pulsante di eliminazione dell'utente
                 document.querySelectorAll('.delete-user').forEach(button => {
                     button.addEventListener('click', function () {
                         let userId = this.getAttribute('data-user-id');
@@ -587,7 +575,7 @@ function displayUsers() {
                     });
                 });
             } else {
-                // Se non ci sono utenti, mostra un messaggio di errore
+                // Se non ci sono utenti, mostra un messaggio
                 let userTable = document.getElementById('userTable');
                 userTable.innerHTML = '<p>Nessun utente trovato.</p>';
                 userTable.style.display = 'block';
@@ -598,19 +586,14 @@ function displayUsers() {
         }
     };
 
-    // Invia la richiesta al server
     xhr.send();
 }
 
 function displayObjects() {
-    // Nascondi la tabella degli utenti
     document.getElementById('userTable').style.display = 'none';
-
-    // Mostra il calendario
     document.getElementById('calendar').style.display = 'block';
 }
 
-// Aggiungi un gestore di eventi click al pulsante "Bookings"
 document.getElementById('bookingsButton').addEventListener('click', displayObjects);
 
 window.onload = function () {
