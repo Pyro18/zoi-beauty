@@ -1,6 +1,6 @@
 <?php
-global $db;
 session_start();
+global $db;
 include "../../../config/db.php";
 include "../../../config/request_db.php";
 
