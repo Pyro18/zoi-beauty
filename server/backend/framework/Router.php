@@ -13,13 +13,10 @@ class Router {
     }
 
     public function route(string $url) {
-        // Rimuovi la query string e il frammento URL
         $url = strtok($url, '?#');
 
-        // Assicurati che l'URL non termini con una barra
         $url = rtrim($url, '/');
 
-        // Se l'URL è vuoto, reindirizza alla home page
         if (empty($url)) {
             $url = '/';
         }

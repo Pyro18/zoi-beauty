@@ -1,5 +1,8 @@
 console.log('login.js loaded');
 
+const messageModal = new bootstrap.Modal(document.getElementById('messageModal'), {});
+const modalMessageBody = document.getElementById('modalMessageBody');
+
 // Funzione per l'invio del modulo di auth
 function handleLoginFormSubmit(event) {
     event.preventDefault();
@@ -26,14 +29,19 @@ function handleLoginFormSubmit(event) {
                 if (xhr.status === 200) {
                     const data = JSON.parse(xhr.responseText);
                     if (data.status === 'success') {
-                        messageDiv.innerHTML = `<div id="success-login" class="container alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
-                        window.location.href = '/';
+                        modalMessageBody.innerHTML = `<div class="alert alert-success" role="alert">Registrazione avvenuta con successo</div>`;
+                        messageModal.show();
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2000);
                     } else {
-
+                        modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Autentificazione fallita: ${data.message}</div>`;
+                        messageModal.show();
                     }
                 } else {
                     console.error('Error:', xhr.status, xhr.statusText);
-                    errorDiv.innerHTML = `<div id="error-login" class="container alert alert-danger" role="alert">Login failed. Please try again later.</div>`;
+                    modalMessageBody.innerHTML = `<div class="alert alert-danger" role="alert">Errore</div>`;
+                    messageModal.show();
                 }
             }
         };
